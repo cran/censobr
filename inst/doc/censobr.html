@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2023-09-05" />
+
+<title>Introduction to censobr</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to censobr</h1>
+<h4 class="date">2023-09-05</h4>
+
+
+
+<p><strong>censobr</strong> is an R package to download data from
+Brazil’s Population Census. The package is built on top of the <a href="https://arrow.apache.org/docs/r/">Arrow platform</a>, which allows
+users to work with larger-than-memory census data using <a href="https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-data-with-dplyr">{dplyr}
+familiar functions</a>.</p>
+<p><em>obs.:</em> The package is still under development. At the moment,
+censobr only includes microdata from the 2000 and 2010 censuses, but it
+is being expanded to cover more years and data sets.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># or use the development version with latest features</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>utils<span class="sc">::</span><span class="fu">remove.packages</span>(<span class="st">&#39;censobr&#39;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ipeaGIT/censobr&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(censobr)</span></code></pre></div>
+</div>
+<div id="basic-usage" class="section level2">
+<h2>Basic usage</h2>
+<p>The package currently includes 5 main functions to download Census
+microdata:</p>
+<ol style="list-style-type: decimal">
+<li><code>read_population()</code></li>
+<li><code>read_households()</code></li>
+<li><code>read_mortality()</code></li>
+<li><code>read_families()</code></li>
+<li><code>read_emigration()</code></li>
+</ol>
+<p>The syntax of all <strong>censobr</strong> functions operate on the
+same logic so it becomes intuitive to download any data set using a
+single line of code. Like this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>dfh <span class="ot">&lt;-</span> <span class="fu">read_households</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>          year,          <span class="co"># year of reference</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>          columns,       <span class="co"># select columns to read</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>          add_labels,    <span class="co"># add labels to categorical variables</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>          as_data_frame, <span class="co"># return an Arrow DataSet or a data.frame</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>          showProgress,  <span class="co"># show download progress bar</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>          cache          <span class="co"># cache data for faster access later</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>         )</span></code></pre></div>
+<p><strong><em>Note:</em></strong> all data sets in
+<strong>censobr</strong> are enriched with geography columns following
+the name standards of the <a href="https://github.com/ipeaGIT/geobr/">{geobr} package</a> to help
+data manipulation and integration with spatial data from the {geobr}
+package. The added columns are:
+<code>c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)</code>.</p>
+<div id="data-cache" class="section level3">
+<h3>Data cache</h3>
+<p>The first time the user runs a function, <strong>censobr</strong>
+will download the file and store it locally. This way, the data only
+needs to be downloaded once. When the <code>cache</code> parameter is
+set to <code>TRUE</code> (Default), the function will read the cached
+data, which is much faster.</p>
+<p>Users can list and/or delete data files cached locally using the
+<code>censobr_cache()</code> function:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(censobr)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co"># list cached files</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">censobr_cache</span>(<span class="at">list_files =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; Files currently chached:</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2000_families.parquet</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2000_households.parquet</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2000_population.parquet</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2010_deaths.parquet</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2010_households.parquet</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2010_population.parquet</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># delete particular file</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">censobr_cache</span>(<span class="at">delete_file =</span> <span class="st">&quot;2010_emigration&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; The file &#39;2010_emigration&#39; is not cached.</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; Files currently chached:</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2000_families.parquet</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2000_households.parquet</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2000_population.parquet</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2010_deaths.parquet</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2010_households.parquet</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr_v0.1.0/2010_population.parquet</span></span></code></pre></div>
+</div>
+</div>
+<div id="larger-than-memory-data" class="section level2">
+<h2>Larger-than-memory Data</h2>
+<p>Microdata of Brazilian census are often be too big to load in users’
+RAM memory. To avoid this problem, <strong>censobr</strong> will by
+default return an <a href="https://arrow.apache.org/docs/r/articles/arrow.html#tabular-data-in-arrow">Arrow
+table</a>, which can be analyzed like a regular <code>data.frame</code>
+using the <code>dplyr</code> package without loading the full data to
+memory.</p>
+<p>Let’s see how it works in a couple examples:</p>
+</div>
+<div id="reproducible-examples" class="section level2">
+<h2>Reproducible examples</h2>
+<p>First, let’s load the libraries we’ll be using in this vignette.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">library</span>(censobr)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;arrow&#39;</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; The following object is masked from &#39;package:utils&#39;:</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt;     timestamp</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;dplyr&#39;</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:stats&#39;:</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt;     filter, lag</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:base&#39;:</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="fu">library</span>(geobr)</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; Loading required namespace: sf</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div id="using-population-data" class="section level4">
+<h4>Using Population data:</h4>
+<p>In this example we’ll be calculating the proportion of people with
+higher education in different racial groups in the state of Rio de
+Janeiro. First, we need to use the <code>read_population()</code>
+function to download the population data set.</p>
+<p>Since we don’t need to load to memory all columns from the data, we
+can pass a vector the the columns we’re going to use. This might be
+necessary in more constrained computing environments. Note that by
+setting <code>add_labels = &#39;pt&#39;</code>, the function returns labeled
+values for categorical variables.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">read_population</span>(<span class="at">year =</span> <span class="dv">2010</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>                       <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">&#39;abbrev_state&#39;</span>, <span class="st">&#39;V0606&#39;</span>, <span class="st">&#39;V0010&#39;</span>, <span class="st">&#39;V6400&#39;</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>                       <span class="at">add_labels =</span> <span class="st">&#39;pt&#39;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>                       <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; Reading data cached locally.</span></span></code></pre></div>
+<p>Next, we use the <code>dplyr</code> syntax to (a) filter observations
+for the state of Rio de Janeiro, (b) group observations by racial group,
+(c) summarize the data calculating the proportion of individuals with
+higher education.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> pop <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>      <span class="fu">filter</span>(abbrev_state <span class="sc">==</span> <span class="st">&quot;RJ&quot;</span>) <span class="sc">|&gt;</span>                                                    <span class="co"># (a)</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>      <span class="fu">collect</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>      <span class="fu">group_by</span>(V0606) <span class="sc">|&gt;</span>                                                                 <span class="co"># (b)</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="at">higher_edu =</span> <span class="fu">sum</span>(V0010[<span class="fu">which</span>(V6400<span class="sc">==</span><span class="st">&quot;Superior completo&quot;</span>)]) <span class="sc">/</span> <span class="fu">sum</span>(V0010), <span class="co"># (c)</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>                <span class="at">pop =</span> <span class="fu">sum</span>(V0010) ) <span class="sc">|&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>      <span class="fu">collect</span>()</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="fu">head</span>(df)</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;   V0606    higher_edu      pop</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt; 1 Amarela      0.0782  122552.</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt; 2 Branca       0.151  7579023.</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="co">#&gt; 3 Ignorado     0         3397.</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co">#&gt; 4 Indígena     0.109    15258.</span></span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="co">#&gt; 5 Parda        0.0443 6332408.</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; 6 Preta        0.0405 1937291.</span></span></code></pre></div>
+<p>Now we only need to plot the results.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">subset</span>(df, V0606 <span class="sc">!=</span> <span class="st">&#39;Ignorado&#39;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x=</span>V0606, <span class="at">y=</span>higher_edu), <span class="at">fill =</span> <span class="st">&#39;#5c997e&#39;</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">&#39;Proportion with higher education&#39;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>                     <span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&#39;Cor/raça&#39;</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="data:image/png;base64,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" width="100%" /></p>
+</div>
+<div id="using-household-data" class="section level4">
+<h4>Using household data:</h4>
+<p>In this example, we are going to map how much people spend with rent
+across different states in Brazil. First, we can easily download the
+households data set with the <code>read_households()</code>
+function.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>hs <span class="ot">&lt;-</span> <span class="fu">read_households</span>(<span class="at">year =</span> <span class="dv">2010</span>, </span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>                      <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt; Reading data cached locally.</span></span></code></pre></div>
+<p>Now we’re going to (a) group observations by state, (b) calculate the
+average rent, and (c) collect the results.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>rent <span class="ot">&lt;-</span> hs <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>        <span class="fu">collect</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>        <span class="fu">group_by</span>(code_state) <span class="sc">|&gt;</span>                                            <span class="co"># (a)</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>        <span class="fu">summarize</span>(<span class="at">avgrent=</span><span class="fu">weighted.mean</span>(<span class="at">x=</span>V2011, <span class="at">w=</span>V0010, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="sc">|&gt;</span>  <span class="co"># (b)</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>        <span class="fu">collect</span>()                                                          <span class="co"># (c)</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="fu">head</span>(rent)</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt;   code_state avgrent</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;        &lt;dbl&gt;</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; 1 11            340.</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; 2 12            295.</span></span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; 3 13            346.</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; 4 14            298.</span></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; 5 15            297.</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; 6 16            322.</span></span></code></pre></div>
+<p>In order to create a map with of these values, we are going to use
+the <code>geobr</code> package to download the geometries of Brazilian
+states.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>uf <span class="ot">&lt;-</span> geobr<span class="sc">::</span><span class="fu">read_state</span>(<span class="at">year =</span> <span class="dv">2010</span>, </span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>                        <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt; Using year 2010</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="fu">head</span>(uf)</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; Simple feature collection with 6 features and 5 fields</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; Dimension:     XY</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; Bounding box:  xmin: -73.99045 ymin: -13.6937 xmax: -46.06095 ymax: 5.271841</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt; Geodetic CRS:  SIRGAS 2000</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;   code_state abbrev_state name_state code_region name_region</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt; 1         11           RO   Rondônia           1       Norte</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt; 2         12           AC       Acre           1       Norte</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt; 3         13           AM   Amazonas           1       Norte</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; 4         14           RR    Roraima           1       Norte</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; 5         15           PA       Pará           1       Norte</span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt; 6         16           AP      Amapá           1       Norte</span></span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt;                             geom</span></span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a><span class="co">#&gt; 1 MULTIPOLYGON (((-63.32721 -...</span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt; 2 MULTIPOLYGON (((-73.18253 -...</span></span>
+<span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="co">#&gt; 3 MULTIPOLYGON (((-67.32609 2...</span></span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt; 4 MULTIPOLYGON (((-60.20051 5...</span></span>
+<span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="co">#&gt; 5 MULTIPOLYGON (((-54.95431 2...</span></span>
+<span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt; 6 MULTIPOLYGON (((-51.1797 4....</span></span></code></pre></div>
+<p>Now we only need to merge the spatial data with our rent estimates
+and map the results.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>uf<span class="sc">$</span>code_state <span class="ot">&lt;-</span> <span class="fu">as.character</span>(uf<span class="sc">$</span>code_state)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>rent_sf <span class="ot">&lt;-</span> <span class="fu">left_join</span>(uf, rent, <span class="at">by =</span> <span class="st">&#39;code_state&#39;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> rent_sf, <span class="fu">aes</span>(<span class="at">fill =</span> avgrent), <span class="at">color=</span><span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="fu">scale_fill_distiller</span>(<span class="at">palette =</span> <span class="st">&quot;Greens&quot;</span>, <span class="at">direction =</span> <span class="dv">1</span>, </span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>                       <span class="at">name=</span><span class="st">&#39;Avgerage</span><span class="sc">\n</span><span class="st">Rent in R$&#39;</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
+<p><img src="data:image/png;base64,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" width="100%" /></p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
