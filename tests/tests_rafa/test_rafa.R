@@ -64,27 +64,77 @@ df2 <- as.data.frame(df)
 table(df2$V1006)
 
 
-### 666 --------------------------- se reclamaredm do defaul T
 
-# NEXT CHANGES
+# NEXT CHANGES  ---------------------------
+#
+# #> using cache_dir and data_release as global variables
+# https://stackoverflow.com/questions/12598242/global-variables-in-packages-in-r
+#
+# censobr_env <- new.env()
+# censobr_env$data_release <- 'v0.1.0'
+#
 
-#> global variable for package version
-https://stackoverflow.com/questions/12598242/global-variables-in-packages-in-r
-pkg_env <- new.env()
-pkg_env$data_release <- 'v0.1.0'
 
 #> cache function delete data from previous package versions
 
+# current cache
+pkgv <- paste0('censobr_', 'v0.1.0' )
+cache_dir <- tools::R_user_dir(pkgv, which = 'cache')
+
+# determine old cache
+dir_above <- dirname(cache_dir)
+all_cache <- list.files(dir_above, pattern = 'censobr',full.names = TRUE)
+old_cache <- all_cache[!grepl(pkgv, all_cache)]
+
+# delete
+unlink(old_cache, recursive = TRUE)
 
 
 
 
 
-##### Coverage ------------------------
+##### downloads ------------------------
+library(ggplot2)
+library(dlstats)
+library(data.table)
+library(ggplot2)
+
+
+x <- dlstats::cran_stats(c('censobr', 'geobr', 'flightsbr'))
+
+if (!is.null(x)) {
+  head(x)
+  ggplot(x, aes(end, downloads, group=package, color=package)) +
+    geom_line() + geom_point(aes(shape=package))
+}
+
+setDT(x)
+
+x[, .(total = sum(downloads)) , by=package][order(total)]
+
+x[ start > as.Date('2022-01-01'), .(total = sum(downloads)) , by=package][order(total)]
+
+xx <- x[package=='r5r',]
+
+ggplot() +
+  geom_line(data=x, aes(x=end, y=downloads, color=package))
+
+
+library(cranlogs)
+
+a <- cranlogs::cran_downloads( package = c("censobr"), from = "2020-01-01", to = "last-day")
+
+a
+ggplot() +
+  geom_line(data=a, aes(x=date, y=count, color=package))
+
+
+
+
+# Coverage ------------------------
 # usethis::use_coverage()
 # usethis::use_github_action("test-coverage")
 
-library(censobr)
 library(testthat)
 library(covr)
 Sys.setenv(NOT_CRAN = "true")
@@ -93,7 +143,11 @@ Sys.setenv(NOT_CRAN = "true")
 # each function separately
 t1 <- covr::function_coverage(fun=read_mortality, test_file("tests/testthat/test_read_mortality.R"))
 t1 <- covr::function_coverage(fun=censobr_cache, test_file("tests/testthat/test_censobr_cache.R"))
+t1 <- covr::function_coverage(fun=censobr:::add_labels_emigration, test_file("tests/testthat/test_labels_emigration.R"))
+t1 <- covr::function_coverage(fun=censobr:::add_labels_mortality, test_file("tests/testthat/test_labels_mortality.R"))
+t1 <- covr::function_coverage(fun=censobr:::add_labels_households, test_file("tests/testthat/test_labels_households.R"))
 t1
+
 
 # nocov start
 
@@ -140,7 +194,7 @@ gtools::ASCIIfy('São Paulo')
 gtools::ASCIIfy('Rondônia')
 
 stringi::stri_encode('S\u00e3o Paulo', to="UTF-8")
-stringi::stri_encode("\\u00c1rea de", to="UTF-8")
+stringi::stri_encode("/u00c1rea de", to="UTF-8")
 
 stringi::stri_escape_unicode("São Paulo")
 stringi::stri_escape_unicode("Área")

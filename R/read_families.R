@@ -13,7 +13,7 @@
 #'
 #' @return An arrow `Dataset` or a `"data.frame"` object.
 #' @export
-#' @family download microdata
+#' @family Microdata
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' # return data as arrow Dataset
 #' df <- read_families(year = 2000)
@@ -29,6 +29,7 @@ read_families <- function(year = 2000,
   checkmate::assert_numeric(year)
   checkmate::assert_vector(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame)
+  checkmate::assert_string(add_labels, pattern = 'pt', null.ok = TRUE)
 
   # data available for the years:
   years <- c(2000)
@@ -36,7 +37,7 @@ read_families <- function(year = 2000,
                                               paste(years), collapse = " "))}
 
   ### Get url
-  file_url <- paste0('https://github.com/ipeaGIT/censobr/releases/download/v0.1.0/',year,'_families.parquet')
+  file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/", censobr_env$data_release, "/", year, "_families.parquet")
 
 
   ### Download

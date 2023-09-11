@@ -1,17 +1,18 @@
 # Add labels to categorical variables of emigration datasets
 #' @keywords internal
 add_labels_emigration <- function(arrw,
-                                   year = parent.frame()$year,
-                                   lang = 'pt'){
+                                  year = parent.frame()$year,
+                                  lang = 'pt'){
 
-  # check languate input
+  # check input
   checkmate::assert_string(lang, pattern = 'pt', na.ok = TRUE)
+  if (year != 2010){stop('Labels for this data are only available for the year 2010')}
 
   # names of columns present in the data
   cols <- names(arrw)
 
   ### YEAR 2010
-  if(year == 2010 & lang == 'pt'){
+  if(year == 2010 & lang == 'pt'){ # nocov start
 
 
     # urban vs rural
@@ -245,7 +246,7 @@ add_labels_emigration <- function(arrw,
         V3061 == '8000998' ~ 'Ignorado',
         V3061 == '8000999' ~ paste0('N\u00e3o sabia pa\u00eds estrangeiro')))
     }
-  }
+  }  # nocov end
 
   return(arrw)
 }
