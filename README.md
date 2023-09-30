@@ -2,16 +2,18 @@
 
 [![CRAN
    status](https://www.r-pkg.org/badges/version/censobr)](https://CRAN.R-project.org/package=censobr)
-[![R-CMD-check](https://github.com/ipeaGIT/censobr/workflows/R-CMD-check/badge.svg)](https://github.com/ipeaGIT/censobr/actions)
-[![Lifecycle:
-     experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![CRAN/METACRAN Total
-   downloads](http://cranlogs.r-pkg.org/badges/grand-total/censobr?color=yellow)](https://CRAN.R-project.org/package=censobr) [![Codecov test
+   downloads](http://cranlogs.r-pkg.org/badges/grand-total/censobr?color=blue)](https://CRAN.R-project.org/package=censobr) [![Codecov test
 coverage](https://codecov.io/gh/ipeaGIT/censobr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipeaGIT/censobr?branch=main)
+[![Lifecycle:
+     maturing](https://img.shields.io/badge/lifecycle-maturing-yellow.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+
+[![R-CMD-check-main](https://github.com/ipeaGIT/censobr/workflows/R-CMD-check-main/badge.svg)](https://github.com/ipeaGIT/censobr/actions)
+[![R-CMD-check-dev](https://github.com/ipeaGIT/censobr/workflows/R-CMD-check-dev/badge.svg)](https://github.com/ipeaGIT/censobr/actions)
+
 
 **censobr** is an R package to download data from Brazil's Population Census. The package is built on top of the [Arrow platform](https://arrow.apache.org/docs/r/), which allows users to work with larger-than-memory census data using [{dplyr} familiar functions](https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-data-with-dplyr).
 
-*obs.:* The package is still under development. At the moment, censobr only includes microdata from the 2000 and 2010 censuses, but it is being expanded to cover more years and data sets.
 
 ## Installation
 
@@ -21,23 +23,35 @@ install.packages("censobr")
 
 # or use the development version with latest features
 utils::remove.packages('censobr')
-devtools::install_github("ipeaGIT/censobr")
+remotes::install_github("ipeaGIT/censobr", ref="dev")
 library(censobr)
 ```
 
 
 ## Basic usage
 
-The package currently includes 5 main functions to download Census microdata:
+The package currently includes 6 main functions to download & read census data:
 
 1. `read_population()`
 2. `read_households()`
 3. `read_mortality()`
 4. `read_families()`
 5. `read_emigration()`
+6. `read_tracts()`
+
+**censobr** also includes a few support functions to help users navigate the documentation Brazilian censuses, providing convenient information on data variables and methodology:
+
+7. `data_dictionary()`
+8. `questionnaire()`
+9. `interview_manual()`
+
+Finally, the package includes two functions to help users manage the data chached locally.
+
+10. `censobr_cache()` 
+11. `set_censobr_cache_dir()`
 
 
-The syntax of all **censobr** functions operate on the same logic so it becomes intuitive to download any data set using a single line of code. Like this:
+The syntax of all **censobr** functions to read data operate on the same logic so it becomes intuitive to download any data set using a single line of code. Like this:
 
 ```
 read_households(
@@ -54,12 +68,17 @@ read_households(
 
 ### Data cache
 
-The first time the user runs a function, **censobr** will download the file and store it locally. This way, the data only needs to be downloaded once. When the `cache` parameter is set to `TRUE` (Default), the function will read the cached data, which is much faster. Users can list and/or delete data files cached locally using the `censobr_cache()` function.
+The first time the user runs a function, **censobr** will download the file and store it locally. This way, the data only needs to be downloaded once. When the `cache` parameter is set to `TRUE` (Default), the function will read the cached data, which is much faster. 
+
+- `censobr_cache()`: can be used to list and/or delete data files cached locally
+- `set_censobr_cache_dir()`: can be used to set custom cache directory for censobr files
+
 
 
 ## Larger-than-memory Data
 
 Microdata of Brazilian census are often be too big to load in users' RAM memory. To avoid this problem, **censobr** will by default return an [Arrow table](https://arrow.apache.org/docs/r/articles/arrow.html#tabular-data-in-arrow), which can be analyzed like a regular `data.frame` using the `dplyr` package without loading the full data to memory.
+
 
 More info in the package [vignette](https://ipeagit.github.io/censobr/).
 
@@ -84,4 +103,25 @@ Afaik, **censobr** is the only R package that provides fast and convenient acces
 
 Original Census data is collected by the Brazilian Institute of Geography and Statistics (IBGE). The **censobr** package is developed by a team at the Institute for Applied Economic Research (Ipea), Brazil. If you want to cite this package, you can cite it as:
 
-- Pereira, R.H.M. (2023) censobr: Download Data from Brazil's Population Census. GitHub repository - https://github.com/ipeaGIT/censobr.
+- Pereira, Rafael H. M.; Barbosa, Rogério J. (2023) censobr: Download Data from Brazil's Population Census. R package version v0.2.0, <https://CRAN.R-project.org/package=censobr>.
+
+
+```
+bibentry(
+  bibtype  = "Manual",
+  title       = "censobr: Download Data from Brazil's Population Census",
+  author      = "Rafael H. M. Pereira [aut, cre] and Rogério J. Barbosa [aut]",
+  year        = 2023,
+  version     = "v0.2.0",
+  url         = "https://CRAN.R-project.org/package=censobr",
+  textVersion = "Pereira, R. H. M.; Barbosa, R. J. (2023) censobr: Download Data from Brazil's Population Census. R package version v0.2.0, <https://CRAN.R-project.org/package=censobr>."
+)
+
+```
+::: {.pkgdown-devel}
+tests only on dev branch
+`2+2`
+:::
+
+
+

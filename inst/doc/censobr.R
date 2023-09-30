@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -6,7 +6,13 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-## ---- eval = FALSE------------------------------------------------------------
+use_suggested_pkgs <- c((requireNamespace("scales")), 
+                        (requireNamespace("ggplot2")), 
+                        (requireNamespace("geobr")))
+
+use_suggested_pkgs <- all(use_suggested_pkgs)
+
+## ----eval = FALSE-------------------------------------------------------------
 #  read_households(
 #    year,          # year of reference
 #    columns,       # select columns to read
@@ -16,24 +22,27 @@ knitr::opts_chunk$set(
 #    cache          # cache data for faster access later
 #    )
 
-## ---- eval=TRUE, warning=FALSE, message=FALSE---------------------------------
+## ----eval=TRUE, warning=FALSE, message=FALSE----------------------------------
 library(censobr)
 library(arrow)
 library(dplyr)
-library(geobr)
 library(ggplot2)
 
-## ---- eval = TRUE, warning = FALSE--------------------------------------------
+## ----eval = TRUE, warning = FALSE---------------------------------------------
 pop <- read_population(year = 2010,
                        columns = c('abbrev_state', 'V0606', 'V0010', 'V6400'),
                        add_labels = 'pt',
                        showProgress = FALSE)
 
+class(pop)
 
-## ---- eval = TRUE, warning = FALSE--------------------------------------------
+## ----eval = TRUE, warning = FALSE---------------------------------------------
+dplyr::glimpse(pop)
+
+## ----eval = TRUE, warning = FALSE---------------------------------------------
 df <- pop |>
       filter(abbrev_state == "RJ") |>                                                    # (a)
-      collect() |>
+      compute() |>
       group_by(V0606) |>                                                                 # (b)
       summarize(higher_edu = sum(V0010[which(V6400=="Superior completo")]) / sum(V0010), # (c)
                 pop = sum(V0010) ) |>
@@ -41,7 +50,7 @@ df <- pop |>
 
 head(df)
 
-## ---- eval = TRUE-------------------------------------------------------------
+## ----eval = use_suggested_pkgs------------------------------------------------
 df <- subset(df, V0606 != 'Ignorado')
 
 ggplot() +
@@ -52,14 +61,14 @@ ggplot() +
   theme_classic()
   
 
-## ---- eval = TRUE-------------------------------------------------------------
+## ----eval = TRUE--------------------------------------------------------------
 hs <- read_households(year = 2010, 
                       showProgress = FALSE)
 
 
-## ---- eval = TRUE, warning = FALSE--------------------------------------------
+## ----eval = TRUE, warning = FALSE---------------------------------------------
 esg <- hs |> 
-        collect() |>
+        compute() |>
         group_by(code_muni) |>                                             # (a)
         summarize(rede = sum(V0010[which(V0207=='1')]),                    # (b)
                   total = sum(V0010)) |>                                   # (b)
@@ -68,12 +77,14 @@ esg <- hs |>
 
 head(esg)
 
-## ---- eval = TRUE, warning = FALSE--------------------------------------------
+## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+library(geobr)
+
 muni_sf <- geobr::read_municipality(year = 2010,
                                     showProgress = FALSE)
 head(muni_sf)
 
-## ---- eval = TRUE, warning = FALSE--------------------------------------------
+## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
 muni_sf$code_muni <- as.character(muni_sf$code_muni)
 esg_sf <- left_join(muni_sf, esg, by = 'code_muni')
 
@@ -86,30 +97,28 @@ ggplot() +
   theme_void()
 
 
-## ---- eval = TRUE, warning = FALSE--------------------------------------------
-metro_muni <- geobr::read_metro_area(year = 2010,
-                                     showProgress = FALSE) |> 
-                     subset(name_metro == "RM São Paulo")
+## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+metro_muni <- geobr::read_metro_area(year = 2010, showProgress = FALSE) |> 
+              subset(name_metro == "RM São Paulo")
 
-## ---- eval = TRUE, warning = FALSE--------------------------------------------
-wt_areas <- geobr::read_weighting_area(code_weighting = "SP",
-                                       showProgress = FALSE,
+## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+wt_areas <- geobr::read_weighting_area(code_weighting = "SP", showProgress = FALSE,
                                        year = 2010)
 
 wt_areas <- subset(wt_areas, code_muni %in% metro_muni$code_muni)
 head(wt_areas)
 
-## ---- eval = TRUE, warning = FALSE--------------------------------------------
+## ----eval = TRUE, warning = FALSE---------------------------------------------
 rent <- hs |>
         filter(code_muni %in% metro_muni$code_muni) |>                     # (a)
-        collect() |>
+        compute() |>
         group_by(code_weighting) |>                                        # (b)
         summarize(avgrent=weighted.mean(x=V2011, w=V0010, na.rm=TRUE)) |>  # (c)
         collect()                                                          # (d)
 
 head(rent)
 
-## ---- eval = TRUE, warning = FALSE--------------------------------------------
+## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
 rent_sf <- left_join(wt_areas, rent, by = 'code_weighting')
 
 ggplot() +
@@ -120,14 +129,20 @@ ggplot() +
   theme_void()
 
 
-## ---- eval=TRUE, warning=FALSE------------------------------------------------
+## ----eval=TRUE, warning=FALSE-------------------------------------------------
 censobr_cache(list_files = TRUE)
 
-## ---- eval=TRUE, warning=FALSE------------------------------------------------
+## ----eval=TRUE, warning=FALSE-------------------------------------------------
 censobr_cache(delete_file = "2010_emigration")
 
 
-## ---- eval=TRUE, warning=FALSE------------------------------------------------
+## ----eval=TRUE, warning=FALSE-------------------------------------------------
 censobr_cache(delete_file = "all")
 
+
+## ----eval=FALSE, warning=FALSE------------------------------------------------
+#  tempf <- tempdir()
+#  
+#  set_censobr_cache_dir(path = tempf)
+#  
 

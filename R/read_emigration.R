@@ -16,10 +16,15 @@
 #' @family Microdata
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' # return data as arrow Dataset
-#' df <- read_emigration(year = 2010)
+#' df <- read_emigration(year = 2010,
+#'                       showProgress = FALSE)
+#'
 #'
 #' # return data as data.frame
-#' df <- read_emigration(year = 2010, as_data_frame = TRUE)
+#' df <- read_emigration(year = 2010,
+#'                       as_data_frame = TRUE,
+#'                       showProgress = FALSE)
+#'
 #'
 read_emigration <- function(year = 2010,
                              columns = NULL,
@@ -40,7 +45,9 @@ read_emigration <- function(year = 2010,
                                               paste(years), collapse = " "))}
 
   ### Get url
-  file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/", censobr_env$data_release, "/", year, "_emigration.parquet")
+  file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/",
+                     censobr_env$data_release, "/", year, "_emigration_",
+                     censobr_env$data_release, ".parquet")
 
 
   ### Download
