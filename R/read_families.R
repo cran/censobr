@@ -4,7 +4,7 @@
 #' Download microdata of family records from Brazil's census. Data collected in
 #' the sample component of the questionnaire.
 #'
-#' @param year Numeric. Year of reference in the format `yyyymm`. Defaults to `2000`.
+#' @param year Numeric. Year of reference in the format `yyyy`. Defaults to `2000`.
 #' @template columns
 #' @template add_labels
 #' @template as_data_frame
@@ -36,7 +36,7 @@ read_families <- function(year = 2000,
   # data available for the years:
   years <- c(2000)
   if (isFALSE(year %in% years)) { stop(paste0("Error: Data currently only available for the years ",
-                                              paste(years), collapse = " "))}
+                                              paste(years, collapse = " ")))}
 
   ### Get url
   file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/",

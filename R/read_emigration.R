@@ -27,11 +27,11 @@
 #'
 #'
 read_emigration <- function(year = 2010,
-                             columns = NULL,
-                             add_labels = NULL,
-                             as_data_frame = FALSE,
-                             showProgress = TRUE,
-                             cache = TRUE){
+                            columns = NULL,
+                            add_labels = NULL,
+                            as_data_frame = FALSE,
+                            showProgress = TRUE,
+                            cache = TRUE){
 
   ### check inputs
   checkmate::assert_numeric(year)
@@ -42,7 +42,7 @@ read_emigration <- function(year = 2010,
   # data available for the years:
   years <- c(2010)
   if (isFALSE(year %in% years)) { stop(paste0("Error: Data currently only available for the years ",
-                                              paste(years), collapse = " "))}
+                                              paste(years, collapse = " ")))}
 
   ### Get url
   file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/",

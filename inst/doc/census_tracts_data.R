@@ -6,13 +6,8 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-use_suggested_pkgs <- c((requireNamespace("scales")), 
-                        (requireNamespace("ggplot2")), 
-                        (requireNamespace("geobr")))
 
-use_suggested_pkgs <- all(use_suggested_pkgs)
-
-## ----eval = TRUE, warning = FALSE---------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 library(censobr)
 
 dom <- read_tracts(year = 2010, 
@@ -21,17 +16,17 @@ dom <- read_tracts(year = 2010,
 
 names(dom)[c(1:20,301:320)]
 
-## ----eval=FALSE, warning=FALSE, message=FALSE---------------------------------
-#  data_dictionary(year = 2010, dataset = 'tracts')
-#  
+## ----warning=FALSE, message=FALSE---------------------------------------------
+data_dictionary(year = 2010, dataset = 'tracts')
 
-## ----eval = use_suggested_pkgs, warning=FALSE, message=FALSE------------------
+
+## ----warning=FALSE, message=FALSE---------------------------------------------
 library(arrow)
 library(dplyr)
 library(geobr)
 library(ggplot2)
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 muni_bh <- geobr::read_municipality(code_muni = 'MG', 
                                     year = 2010, 
                                     showProgress = FALSE) |>
@@ -48,7 +43,7 @@ ggplot() +
   geom_sf(data=tracts_sf, fill = 'gray90', color='gray60') + 
   theme_void()
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 # download data
 tract_basico <- read_tracts(year = 2010,
                             dataset = "Basico", 
@@ -69,7 +64,7 @@ tracts_df <- left_join(tract_basico, tract_income) |> collect()
 tracts_df <- tracts_df |> mutate(income_pc = V003 / V002)
 head(tracts_df)
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 bh_tracts <- left_join(tracts_sf, tracts_df, by = 'code_tract')
 
 ggplot() +
@@ -84,7 +79,7 @@ ggplot() +
   theme_void()
 
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 # download data
 tract_entorno <- read_tracts(year = 2010,
                              dataset = "Entorno", 
@@ -101,7 +96,7 @@ df_trees <- tract_entorno |>
 
 head(df_trees)
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 bh_tracts <- left_join(tracts_sf, df_trees, by = 'code_tract')
 
 ggplot() +

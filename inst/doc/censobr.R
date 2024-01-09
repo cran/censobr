@@ -6,11 +6,6 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-use_suggested_pkgs <- c((requireNamespace("scales")), 
-                        (requireNamespace("ggplot2")), 
-                        (requireNamespace("geobr")))
-
-use_suggested_pkgs <- all(use_suggested_pkgs)
 
 ## ----eval = FALSE-------------------------------------------------------------
 #  read_households(
@@ -22,13 +17,13 @@ use_suggested_pkgs <- all(use_suggested_pkgs)
 #    cache          # cache data for faster access later
 #    )
 
-## ----eval=TRUE, warning=FALSE, message=FALSE----------------------------------
+## ----warning=FALSE, message=FALSE---------------------------------------------
 library(censobr)
 library(arrow)
 library(dplyr)
 library(ggplot2)
 
-## ----eval = TRUE, warning = FALSE---------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 pop <- read_population(year = 2010,
                        columns = c('abbrev_state', 'V0606', 'V0010', 'V6400'),
                        add_labels = 'pt',
@@ -36,10 +31,10 @@ pop <- read_population(year = 2010,
 
 class(pop)
 
-## ----eval = TRUE, warning = FALSE---------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 dplyr::glimpse(pop)
 
-## ----eval = TRUE, warning = FALSE---------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 df <- pop |>
       filter(abbrev_state == "RJ") |>                                                    # (a)
       compute() |>
@@ -50,7 +45,7 @@ df <- pop |>
 
 head(df)
 
-## ----eval = use_suggested_pkgs------------------------------------------------
+## -----------------------------------------------------------------------------
 df <- subset(df, V0606 != 'Ignorado')
 
 ggplot() +
@@ -61,12 +56,12 @@ ggplot() +
   theme_classic()
   
 
-## ----eval = TRUE--------------------------------------------------------------
+## -----------------------------------------------------------------------------
 hs <- read_households(year = 2010, 
                       showProgress = FALSE)
 
 
-## ----eval = TRUE, warning = FALSE---------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 esg <- hs |> 
         compute() |>
         group_by(code_muni) |>                                             # (a)
@@ -77,14 +72,14 @@ esg <- hs |>
 
 head(esg)
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 library(geobr)
 
 muni_sf <- geobr::read_municipality(year = 2010,
                                     showProgress = FALSE)
 head(muni_sf)
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 muni_sf$code_muni <- as.character(muni_sf$code_muni)
 esg_sf <- left_join(muni_sf, esg, by = 'code_muni')
 
@@ -97,18 +92,18 @@ ggplot() +
   theme_void()
 
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 metro_muni <- geobr::read_metro_area(year = 2010, showProgress = FALSE) |> 
               subset(name_metro == "RM São Paulo")
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 wt_areas <- geobr::read_weighting_area(code_weighting = "SP", showProgress = FALSE,
                                        year = 2010)
 
 wt_areas <- subset(wt_areas, code_muni %in% metro_muni$code_muni)
 head(wt_areas)
 
-## ----eval = TRUE, warning = FALSE---------------------------------------------
+## ----warning = FALSE----------------------------------------------------------
 rent <- hs |>
         filter(code_muni %in% metro_muni$code_muni) |>                     # (a)
         compute() |>
@@ -118,7 +113,7 @@ rent <- hs |>
 
 head(rent)
 
-## ----eval = use_suggested_pkgs, warning = FALSE-------------------------------
+## ----warning = FALSE----------------------------------------------------------
 rent_sf <- left_join(wt_areas, rent, by = 'code_weighting')
 
 ggplot() +
@@ -129,14 +124,14 @@ ggplot() +
   theme_void()
 
 
-## ----eval=TRUE, warning=FALSE-------------------------------------------------
+## ----warning=FALSE------------------------------------------------------------
 censobr_cache(list_files = TRUE)
 
-## ----eval=TRUE, warning=FALSE-------------------------------------------------
+## ----warning=FALSE------------------------------------------------------------
 censobr_cache(delete_file = "2010_emigration")
 
 
-## ----eval=TRUE, warning=FALSE-------------------------------------------------
+## ----warning=FALSE------------------------------------------------------------
 censobr_cache(delete_file = "all")
 
 

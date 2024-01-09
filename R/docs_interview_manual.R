@@ -24,10 +24,10 @@ interview_manual <- function(year = NULL,
   checkmate::assert_numeric(year)
 
   # data available for the years:
-  years <- c(1970, 1980, 1991, 2000, 2010)
+  years <- c(1970, 1980, 1991, 2000, 2010, 2022)
   if (isFALSE(year %in% years)) { stop(  paste0("Error: Interview manual currently only available for the years: ",
-                                              paste(years), collapse = " ")
-                                        )}
+                                              paste(years, collapse = " "))
+                                         ) }
 
   ### Get url
   fname <- paste0(year, '_interview_manual.pdf')

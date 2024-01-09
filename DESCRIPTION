@@ -1,7 +1,7 @@
 Type: Package
 Package: censobr
 Title: Download Data from Brazil's Population Census
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     c(person(given="Rafael H. M.", family="Pereira", 
              email="rafa.pereira.br@gmail.com", 
@@ -29,11 +29,11 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-09-30 19:52:33 UTC; user
+Packaged: 2024-01-09 14:46:40 UTC; user
 Author: Rafael H. M. Pereira [aut, cre]
     (<https://orcid.org/0000-0003-2125-7465>),
   Rogério J. Barbosa [aut] (<https://orcid.org/0000-0002-6796-4547>),
   Ipea - Institute for Applied Economic Research [cph, fnd]
 Maintainer: Rafael H. M. Pereira <rafa.pereira.br@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-09-30 20:12:39 UTC
+Date/Publication: 2024-01-09 15:20:06 UTC

@@ -5,7 +5,7 @@
 #'
 #' @template year
 #' @param dataset Character. The dataset to be opened. Options currently include
-#'        `c("Basico", "Domicilio", "DomicilioRenda", "Entorno", "ResponsavelRenda", "Responsavel", "PessoaRenda")`.
+#'        `c("Basico", "Domicilio", "DomicilioRenda", "Responsavel", "ResponsavelRenda", "Pessoa", "PessoaRenda",  "Entorno")`.
 #' @template as_data_frame
 #' @template showProgress
 #' @template cache
@@ -41,7 +41,7 @@ read_tracts <- function(year = 2010,
   # data available for the years:
   years <- c(2010)
   if (isFALSE(year %in% years)) { stop(paste0("Error: Data currently only available for the years ",
-                                              paste(years), collapse = " "))}
+                                              paste(years, collapse = " ")))}
 
   # data available for data sets:
   data_sets <- c("Basico", "Domicilio", "DomicilioRenda", "Entorno",
