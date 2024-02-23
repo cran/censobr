@@ -3,6 +3,7 @@ context("set_censobr_cache_dir")
 # skip tests because they take too much time
 skip_if(Sys.getenv("TEST_ONE") != "")
 testthat::skip_on_cran()
+testthat::skip_if_not_installed("arrow")
 
 
 # Reading the data -----------------------
@@ -21,7 +22,7 @@ test_that("set_censobr_cache_dir", {
 
   # check if file exists in custom dir
   files <- list.files(tempd, full.names = TRUE)
-  fname <- paste0('2010_emigration_',data_release, '.parquet')
+  fname <- paste0('2010_emigration_',censobr_env$data_release, '.parquet')
   fname_full <- files[grepl(fname, files)]
   testthat::expect_true( file.exists(fname_full) )
 

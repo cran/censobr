@@ -3,6 +3,7 @@ context("read_mortality")
 # skip tests because they take too much time
 skip_if(Sys.getenv("TEST_ONE") != "")
 testthat::skip_on_cran()
+testthat::skip_if_not_installed("arrow")
 
 
 # Reading the data -----------------------
@@ -26,8 +27,17 @@ test_that("read_mortality", {
 
   # add labels
   test4 <- read_mortality(add_labels = 'pt', columns = c('abbrev_state', 'V1005'))
-  test4 <- test4 |> filter(abbrev_state == 'CE') |> as.data.frame()
+  test4 <- test4 |> dplyr::filter(abbrev_state == 'CE') |> as.data.frame()
   testthat::expect_true(paste('\u00c1rea urbanizada') %in% test4$V1005)
+
+
+  # # merge households
+  # df_main <- read_mortality(year = 2010, merge_households = FALSE)
+  # df_hous <- read_mortality(year = 2010, merge_households = TRUE)
+  #
+  # nrow(df_main) == nrow(df_hous)
+
+
 
 
   # check whether cache argument is working

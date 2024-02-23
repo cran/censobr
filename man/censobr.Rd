@@ -3,7 +3,6 @@
 \docType{package}
 \name{censobr}
 \alias{censobr}
-\alias{_PACKAGE}
 \alias{censobr-package}
 \title{censobr: Download Data from Brazil's Population Census}
 \description{
@@ -34,6 +33,8 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Diego Rabatone Oliveira \email{diraol@diraol.eng.br} [contributor]
+  \item Neal Richardson \email{neal.p.richardson@gmail.com} [contributor]
   \item Ipea - Institute for Applied Economic Research [copyright holder, funder]
 }
 

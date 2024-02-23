@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2024-01-09" />
+<meta name="date" content="2024-02-08" />
 
 <title>Introduction to censobr</title>
 
@@ -338,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Introduction to censobr</h1>
-<h4 class="date">2024-01-09</h4>
+<h4 class="date">2024-02-08</h4>
 
 
 
@@ -508,7 +508,7 @@ easily download the households data set with the
 <code>read_households()</code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>hs <span class="ot">&lt;-</span> <span class="fu">read_households</span>(<span class="at">year =</span> <span class="dv">2010</span>, </span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                      <span class="at">showProgress =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; Reading data cached locally.</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; Downloading data and storing it locally for future use.</span></span></code></pre></div>
 <p>Now we’re going to (a) group observations by municipality, (b) get
 the number of households connected to a sewage network, (c) calculate
 the proportion of households connected, and (d) collect the results.</p>
@@ -659,50 +659,24 @@ data, which is much faster.</p>
 <p>List cached files:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">censobr_cache</span>(<span class="at">list_files =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co">#&gt; Files currently chached:</span></span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1960_questionnaire_long.pdf</span></span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1960_questionnaire_short.pdf</span></span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1970_questionnaire_long.pdf</span></span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1970_questionnaire_short.pdf</span></span>
-<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1980_questionnaire_long.pdf</span></span>
-<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1980_questionnaire_short.pdf</span></span>
-<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1991_questionnaire_long.pdf</span></span>
-<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1991_questionnaire_short.pdf</span></span>
-<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2000_questionnaire_long.pdf</span></span>
-<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2000_questionnaire_short.pdf</span></span>
-<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_households_v0.3.0.parquet</span></span>
-<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_population_v0.3.0.parquet</span></span>
-<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_questionnaire_long.pdf</span></span>
-<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_questionnaire_short.pdf</span></span>
-<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Basico_v0.3.0.parquet</span></span>
-<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_DomicilioRenda_v0.3.0.parquet</span></span>
-<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Domicilio_v0.3.0.parquet</span></span>
-<span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Entorno_v0.3.0.parquet</span></span>
-<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2022_questionnaire_long.pdf</span></span>
-<span id="cb16-22"><a href="#cb16-22" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2022_questionnaire_short.pdf</span></span></code></pre></div>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_dictionary_tracts.pdf</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_households_v0.3.0.parquet</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_population_v0.3.0.parquet</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Basico_v0.3.0.parquet</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_DomicilioRenda_v0.3.0.parquet</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Domicilio_v0.3.0.parquet</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Entorno_v0.3.0.parquet</span></span></code></pre></div>
 <p>Delete a particular file:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">censobr_cache</span>(<span class="at">delete_file =</span> <span class="st">&quot;2010_emigration&quot;</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="co">#&gt; The file &#39;2010_emigration&#39; is not cached.</span></span>
 <span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co">#&gt; Files currently chached:</span></span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1960_questionnaire_long.pdf</span></span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1960_questionnaire_short.pdf</span></span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1970_questionnaire_long.pdf</span></span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1970_questionnaire_short.pdf</span></span>
-<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1980_questionnaire_long.pdf</span></span>
-<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1980_questionnaire_short.pdf</span></span>
-<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1991_questionnaire_long.pdf</span></span>
-<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/1991_questionnaire_short.pdf</span></span>
-<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2000_questionnaire_long.pdf</span></span>
-<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2000_questionnaire_short.pdf</span></span>
-<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_households_v0.3.0.parquet</span></span>
-<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_population_v0.3.0.parquet</span></span>
-<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_questionnaire_long.pdf</span></span>
-<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_questionnaire_short.pdf</span></span>
-<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Basico_v0.3.0.parquet</span></span>
-<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_DomicilioRenda_v0.3.0.parquet</span></span>
-<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Domicilio_v0.3.0.parquet</span></span>
-<span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Entorno_v0.3.0.parquet</span></span>
-<span id="cb17-22"><a href="#cb17-22" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2022_questionnaire_long.pdf</span></span>
-<span id="cb17-23"><a href="#cb17-23" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2022_questionnaire_short.pdf</span></span></code></pre></div>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_dictionary_tracts.pdf</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_households_v0.3.0.parquet</span></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_population_v0.3.0.parquet</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Basico_v0.3.0.parquet</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_DomicilioRenda_v0.3.0.parquet</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Domicilio_v0.3.0.parquet</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#&gt; C:\Users\user\AppData\Local/R/cache/R/censobr/data_release_v0.3.0/2010_tracts_Entorno_v0.3.0.parquet</span></span></code></pre></div>
 <p>Delete all files:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">censobr_cache</span>(<span class="at">delete_file =</span> <span class="st">&quot;all&quot;</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="co">#&gt; All files have been removed.</span></span>
