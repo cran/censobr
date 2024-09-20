@@ -31,6 +31,7 @@ read_families <- function(year = 2000,
   checkmate::assert_numeric(year)
   checkmate::assert_vector(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame)
+  # checkmate::assert_logical(merge_households)
   checkmate::assert_string(add_labels, pattern = 'pt', null.ok = TRUE)
 
   # data available for the years:
@@ -50,10 +51,18 @@ read_families <- function(year = 2000,
                               cache = cache)
 
   # check if download worked
-  if(is.null(local_file)) { return(NULL) }
+  if(is.null(local_file)) { return(invisible(NULL)) }
 
   ### read data
   df <- arrow_open_dataset(local_file)
+
+  # ### merge household data
+  # if (isTRUE(merge_households)) {
+  #   df <- merge_household_var(df,
+  #                             year = year,
+  #                             add_labels = add_labels,
+  #                             showProgress)
+  # }
 
   ### Select
   if (!is.null(columns)) { # columns <- c('V0002','V0011')
@@ -70,8 +79,8 @@ read_families <- function(year = 2000,
   ### output format
   if (isTRUE(as_data_frame)) { return( dplyr::collect(df) )
   } else {
-      return(df)
-    }
+    return(df)
+  }
 
 }
 

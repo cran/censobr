@@ -1,26 +1,20 @@
-link <- 'https://ftp.ibge.gov.br/Trabalho_e_Rendimento/Pesquisa_Nacional_por_Amostra_de_Domicilios_continua/Trimestral/Microdados/2023/PNADC_032023.zip'
-file <- basename(link)
 
+#### cache tests
 
-tic()
-httr::GET(url = link,
-          # httr::timeout(10),
-          httr::progress(),
-          httr::write_disk(file, overwrite = T))
-toc()
+system.time(
+  df <- read_families(year = 2000,
+                      showProgress = T,
+                      cache = T)
+)
 
-
-tic()
-link |>
-  httr2::request() |>
-  httr2::req_progress() |>
-  httr2::req_perform(path = file)
-toc()
+censobr_cache(delete_file = '2000_families')
 
 
 
-dici cenus tract 1970
-arquivo dos 80
+
+############3
+# dici cenus tract 1970
+# arquivo dos 80
 
 
 # devtools::install_github("ipeaGIT/r5r", subdir = "r-package", force=T)
@@ -216,64 +210,12 @@ table(df2$V1006)
 
 
 
-# NEXT CHANGES  ---------------------------
-#
-# #> using cache_dir and data_release as global variables
-# https://stackoverflow.com/questions/12598242/global-variables-in-packages-in-r
-#
-# censobr_env <- new.env()
-# censobr_env$data_release <- 'v0.1.0'
-#
-
-
-#> cache function delete data from previous package versions
-
-# current cache
-pkgv <- paste0('censobr_', 'v0.1.0' )
-cache_dir <- tools::R_user_dir(pkgv, which = 'cache')
-
-# determine old cache
-dir_above <- dirname(cache_dir)
-all_cache <- list.files(dir_above, pattern = 'censobr',full.names = TRUE)
-old_cache <- all_cache[!grepl(pkgv, all_cache)]
-
-# delete
-unlink(old_cache, recursive = TRUE)
-
-
-library(censobr)
-
-censobr_cache(delete_file = 'all')
-
-interview_manual(year = 2010)
-interview_manual(year = 2000)
-interview_manual(year = 1991) #
-interview_manual(year = 1980) #
-interview_manual(year = 1970)
 
 
 
 
-##### tracts data ------------------------
 
-df_ba <- read_tracts(year = 2010,
-                  dataset = 'Basico',
-                  showProgress = TRUE
-                  )
 
-df_do <- read_tracts(year = 2010,
-                     dataset = 'Domicilio',
-                     showProgress = TRUE
-                     )
-
-df_pr <- read_tracts(year = 2010,
-                  dataset = 'PessoaRenda',
-                  showProgress = TRUE
-                  )
-
-dplyr::glimpse(df)
-
-df$domicilio03
 
 
 ##### downloads ------------------------
@@ -330,7 +272,10 @@ t1 <- covr::function_coverage(fun=censobr_cache, test_file("tests/testthat/test_
 t1 <- covr::function_coverage(fun=censobr:::add_labels_emigration, test_file("tests/testthat/test_labels_emigration.R"))
 t1 <- covr::function_coverage(fun=censobr:::add_labels_mortality, test_file("tests/testthat/test_labels_mortality.R"))
 t1 <- covr::function_coverage(fun=censobr:::add_labels_households, test_file("tests/testthat/test_labels_households.R"))
+t1 <- covr::function_coverage(fun=censobr::censobr_cache, test_file("./tests/testthat/test_censobr_cache.R"))
+t1 <- covr::function_coverage(fun=censobr::censobr_cache)
 t1
+
 
 
 # nocov start
@@ -402,10 +347,12 @@ urlchecker::url_update()
 
 
 
+
 # CMD Check --------------------------------
 # Check package errors
 
 # run only the tests
+Sys.setenv(NOT_CRAN = "true")
 testthat::test_local()
 
 # LOCAL
@@ -426,7 +373,7 @@ extrachecks::extrachecks()
 
 
 # submit to CRAN -----------------
-usethis::use_cran_comments()
+# usethis::use_cran_comments()
 
 
 devtools::submit_cran()
@@ -498,4 +445,80 @@ for_sf <- left_join(fort_wa, rent, by = c('code_weighting'='V0011'))
 
 ggplot() +
   geom_sf(data=for_sf, aes(fill = avgrent), color=NA)
+
+
+
+
+
+
+
+
+
+
+
+
+Caused by error:
+  ! rapi_execute: Failed to run query
+Error: Out of Memory Error: failed to offload data block of size 256.0 KiB (1.1 GiB/1.1 GiB used).
+This limit was set by the 'max_temp_directory_size' setting.
+By default, this setting utilizes the available disk space on the drive where the 'temp_directory' is located.
+You can adjust this setting, by using (for example) PRAGMA max_temp_directory_size='10GiB'
+
+
+[ FAIL 2 | WARN 81 | SKIP 0 | PASS 234 ]
+Error: Test failures
+Execution halted
+Warning messages:
+  1: Connection is garbage-collected, use dbDisconnect() to avoid this.
+2: Connection is garbage-collected, use dbDisconnect() to avoid this.
+
+
+
+══ Warnings ════════════════════════════════════════════════════════════════════
+── Warning ('test_labels_emigration.R:14:3'): add_labels_emigration ────────────
+Potentially unsafe or invalid elements have been discarded from R metadata.
+ℹ Type: "externalptr"
+→ If you trust the source, you can set `options(arrow.unsafe_metadata = TRUE)` to preserve them.
+Backtrace:
+
+
+  ── Warning ('test_read_emigration.R:85:3'): read_emigration errors ─────────────
+Potentially unsafe or invalid elements have been discarded from R metadata.
+ℹ Type: "externalptr"
+→ If you trust the source, you can set `options(arrow.unsafe_metadata = TRUE)` to preserve them.
+Backtrace:
+
+
+
+
+
+  ══ Failed tests ════════════════════════════════════════════════════════════════
+── Error ('test_read_families.R:61:5'): families merge_households_vars ─────────
+Error in `db_compute(x$src$con, name, sql, temporary = temporary, unique_indexes = unique_indexes,
+                     indexes = indexes, analyze = analyze, ...)`: Can't copy query to table dbplyr_fxdf6cQfeM.
+Caused by error in `db_save_query.DBIConnection()`:
+! Can't save query to table dbplyr_fxdf6cQfeM.
+ℹ Using SQL: CREATE TEMPORARY TABLE dbplyr_fxdf6cQfeM AS SELECT df.*, V0400,
+V1005, V1006, V1007, V0110, V0111, V0201, M0201, V0202, M0202, V0203, M0203,
+V0204, M0204, V0205, M0205, V0206, M0206, V0207, M0207, V0208, M0208, V0209,
+M0209, V0210, M0210, V0211, M0211, V0212, M0212, V0213, M0213, V0214, M0214,
+V0215, M0215, V0216, M0216, V0217, M0217, V0218, M0218, V0219, M0219, V0220,
+M0220, V0221, M0221, V0222, M0222, V0223, M0223, V7100, V7203, V7204, V7401,
+V7402, V7403, V7404, V7405, V7406, V7407, V7408, V7409, V7616, V7617, v1111,
+v1112, v1113 FROM df LEFT JOIN df_household ON ( df.code_muni =
+                                                   df_household.code_muni AND df.code_state = df_household.code_state AND
+                                                 df.abbrev_state = df_household.abbrev_state AND df.name_state =
+                                                   df_household.name_state AND df.code_region = df_household.code_region AND
+                                                 df.name_region = df_household.name_region AND df.code_weighting =
+                                                   df_household.code_weighting AND df.V0300 = df_household.V0300 )
+Caused by error:
+  ! rapi_execute: Failed to run query
+Error: Error: Out of Memory Error: failed to offload data block of size 256.0 KiB (4.6 GiB/4.6 GiB used).
+This limit was set by the 'max_temp_directory_size' setting.
+By default, this setting utilizes the available disk space on the drive where the 'temp_directory' is located.
+You can adjust this setting, by using (for example) PRAGMA max_temp_directory_size='10GiB'
+
+
+families
+pop
 

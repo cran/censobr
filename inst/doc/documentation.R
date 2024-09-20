@@ -8,17 +8,21 @@ knitr::opts_chunk$set(
 
 ## ----eval = FALSE-------------------------------------------------------------
 #  # Microdata variables
-#  data_dictionary(year = 2010, table = 'microdata')
+#  data_dictionary(year = 2010,
+#                  dataset = 'microdata')
 #  
 #  # Census tract-level variables
-#  data_dictionary(year = 2010, table = 'tracts')
+#  data_dictionary(year = 2010,
+#                  dataset = 'tracts')
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  # 2010
-#  questionnaire(year = 2010)
+#  # short questionnaire
+#  questionnaire(year = 2010,
+#                type = 'short')
 #  
-#  # 1970
-#  questionnaire(year = 1970)
+#  # long questionnaire
+#  questionnaire(year = 2010,
+#                type = 'long')
 
 ## ----eval = FALSE-------------------------------------------------------------
 #  # 2010

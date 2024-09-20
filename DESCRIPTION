@@ -1,7 +1,7 @@
 Type: Package
 Package: censobr
 Title: Download Data from Brazil's Population Census
-Version: 0.3.2
+Version: 0.4.0
 Authors@R: 
     c(person(given="Rafael H. M.", family="Pereira", 
              email="rafa.pereira.br@gmail.com", 
@@ -19,23 +19,27 @@ Authors@R:
              role=c("ctb")),
       person(given = "Ipea - Institute for Applied Economic Research",
              role = c("cph", "fnd")))
-Description: Download data from Brazil's population census. The package is built 
-             on top of the 'Arrow' platform <https://arrow.apache.org/docs/r/>, 
-             which allows users to work with larger-than-memory census data using 
-             'dplyr' familiar functions. <https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-data-with-dplyr>.
+Description: Easy access to data from Brazil's population censuses. The package
+             provides a simple and efficient way to download and read the data 
+             sets and the documentation of all the population censuses taken in 
+             and after 1960 in the country. The package is built on top of the 
+             'Arrow' platform <https://arrow.apache.org/docs/r/>,  which allows 
+             users to work with larger-than-memory census data using 'dplyr' 
+             familiar functions. <https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-data-with-dplyr>.
 License: MIT + file LICENSE
 URL: https://github.com/ipeaGIT/censobr,
         https://ipeagit.github.io/censobr/
 BugReports: https://github.com/ipeaGIT/censobr/issues
-Depends: R (>= 4.0)
-Imports: arrow, checkmate, dplyr, httr (>= 1.4.1), tools
-Suggests: covr, geobr, ggplot2 (>= 3.3.1), rmarkdown, knitr, scales,
-        testthat
+Depends: R (>= 4.1.0)
+Imports: arrow (>= 15.0.1), checkmate, curl (>= 5.0.0), DBI, dplyr,
+        duckdb, duckplyr, fs, tools
+Suggests: covr, dbplyr, geobr, ggplot2 (>= 3.3.1), rmarkdown, knitr,
+        scales, testthat
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-03-23 15:50:51 UTC; user
+Packaged: 2024-09-18 23:39:31 UTC; user
 Author: Rafael H. M. Pereira [aut, cre]
     (<https://orcid.org/0000-0003-2125-7465>),
   Rogério J. Barbosa [aut] (<https://orcid.org/0000-0002-6796-4547>),
@@ -44,4 +48,4 @@ Author: Rafael H. M. Pereira [aut, cre]
   Ipea - Institute for Applied Economic Research [cph, fnd]
 Maintainer: Rafael H. M. Pereira <rafa.pereira.br@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-03-23 16:10:05 UTC
+Date/Publication: 2024-09-20 12:20:15 UTC

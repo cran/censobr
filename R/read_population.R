@@ -12,6 +12,9 @@
 #' @template cache
 #'
 #' @return An arrow `Dataset` or a `"data.frame"` object.
+#'
+#' @template 1960_census_section
+#'
 #' @export
 #' @family Microdata
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
@@ -31,10 +34,11 @@ read_population <- function(year = 2010,
   checkmate::assert_numeric(year)
   checkmate::assert_vector(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame)
+  # checkmate::assert_logical(merge_households)
   checkmate::assert_string(add_labels, pattern = 'pt', null.ok = TRUE)
 
   # data available for the years:
-  years <- c(1970, 1980, 1991, 2000, 2010)
+  years <- c(1960, 1970, 1980, 1991, 2000, 2010)
   if (isFALSE(year %in% years)) { stop(paste0("Error: Data currently only available for the years ",
                                              paste(years, collapse = " ")))}
 
@@ -50,11 +54,18 @@ read_population <- function(year = 2010,
                               cache = cache)
 
   # check if download worked
-  if(is.null(local_file)) { return(NULL) }
-
+  if(is.null(local_file)) { return(invisible(NULL)) }
 
   ### read data
   df <- arrow_open_dataset(local_file)
+
+  # ### merge household data
+  # if (isTRUE(merge_households)) {
+  #    df <- merge_household_var(df,
+  #                              year = year,
+  #                              add_labels = add_labels,
+  #                              showProgress = showProgress)
+  #   }
 
   ### Select
   if (!is.null(columns)) { # columns <- c('V0002','V0011')
@@ -68,11 +79,16 @@ read_population <- function(year = 2010,
                                 lang = add_labels)
   }
 
+  # 1960 warning
+  if(year==1960){
+    warning("This version of the 1960 microdata was compiled by {censobr} from two different releases elaborated by IBGE. The data was processed to ensure consistency and new variables added. See the documentation.")
+  }
+
   ### output format
   if (isTRUE(as_data_frame)) { return( dplyr::collect(df) )
   } else {
-      return(df)
-    }
+    return(df)
+  }
 
 }
 

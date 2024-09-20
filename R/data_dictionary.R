@@ -14,11 +14,17 @@
 #' @family Census documentation
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' # Open data dictionary on browser
-#' data_dictionary(year = 2010, dataset = 'population', showProgress = FALSE)
+#' data_dictionary(year = 2010,
+#'                 dataset = 'population',
+#'                 showProgress = FALSE)
 #'
-#' data_dictionary(year = 1980, dataset = 'households', showProgress = FALSE)
+#' data_dictionary(year = 1980,
+#'                 dataset = 'households',
+#'                 showProgress = FALSE)
 #'
-#' data_dictionary(year = 2010, dataset = 'tracts', showProgress = FALSE)
+#' data_dictionary(year = 2010,
+#'                 dataset = 'tracts',
+#'                 showProgress = FALSE)
 
 data_dictionary <- function(year = 2010,
                             dataset = NULL,
@@ -40,8 +46,8 @@ data_dictionary <- function(year = 2010,
 
   # check year / data availability
   if(dataset == 'tracts'){ years <- c(1970, 1980, 1991, 2000, 2010) }
-  if(dataset == 'population'){ years <- c(1970, 1980, 2000, 2010) }
-  if(dataset == 'households'){ years <- c(1970, 1980, 2000, 2010) }
+  if(dataset == 'population'){ years <- c(1960, 1970, 1980, 1991, 2000, 2010) }
+  if(dataset == 'households'){ years <- c(1960, 1970, 1980, 1991, 2000, 2010) }
   if(dataset == 'families'){ years <- c(2000) }
   if(dataset == 'mortality'){ years <- c(2010) }
   if(dataset == 'emigration'){ years <- c(2010) }
