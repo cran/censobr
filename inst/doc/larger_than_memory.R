@@ -58,12 +58,3 @@ rio2 <- DBI::dbGetQuery(con, "SELECT * FROM 'mortality_2010_tbl' WHERE V0704 LIK
 head(rio2)
 
 
-## ----warning = FALSE, message = FALSE-----------------------------------------
-library(duckplyr)
-
-rio3 <- df |>
-        duckplyr::filter(V0704 == 'Masculino' & abbrev_state == 'RJ')
-
-head(rio3) |> 
-  collect()
-

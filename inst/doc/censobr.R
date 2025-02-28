@@ -8,14 +8,14 @@ knitr::opts_chunk$set(
 
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  read_households(
-#    year,          # year of reference
-#    columns,       # select columns to read
-#    add_labels,    # add labels to categorical variables
-#    as_data_frame, # return an Arrow DataSet or a data.frame
-#    showProgress,  # show download progress bar
-#    cache          # cache data for faster access later
-#    )
+# read_households(
+#   year,          # year of reference
+#   columns,       # select columns to read
+#   add_labels,    # add labels to categorical variables
+#   as_data_frame, # return an Arrow DataSet or a data.frame
+#   showProgress,  # show download progress bar
+#   cache          # cache data for faster access later
+#   )
 
 ## ----warning=FALSE, message=FALSE---------------------------------------------
 library(censobr)
@@ -126,19 +126,19 @@ ggplot() +
 
 
 ## ----warning=FALSE, eval=FALSE------------------------------------------------
-#  censobr_cache(list_files = TRUE)
+# censobr_cache(list_files = TRUE)
 
 ## ----warning=FALSE, eval=FALSE------------------------------------------------
-#  censobr_cache(delete_file = "2010_emigration")
-#  
+# censobr_cache(delete_file = "2010_emigration")
+# 
 
 ## ----warning=FALSE, eval=FALSE------------------------------------------------
-#  censobr_cache(delete_file = "all")
-#  
+# censobr_cache(delete_file = "all")
+# 
 
 ## ----eval=FALSE, warning=FALSE------------------------------------------------
-#  tempf <- tempdir()
-#  
-#  set_censobr_cache_dir(path = tempf)
-#  
+# tempf <- tempdir()
+# 
+# set_censobr_cache_dir(path = tempf)
+# 
 

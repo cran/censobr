@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2024-09-18" />
+<meta name="date" content="2025-02-27" />
 
 <title>Census documentation</title>
 
@@ -338,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Census documentation</h1>
-<h4 class="date">2024-09-18</h4>
+<h4 class="date">2025-02-27</h4>
 
 
 
@@ -526,11 +526,11 @@ it super quick and convenient.</p>
 <p>The <code>data_dictionary()</code> indicate the definition of each
 variable, and the meaning of their categories in the case of categorical
 variables. The function currently covers the data dictionaries for all
-Brazilian censuses since 1970 (<code>1970</code>, <code>1980</code>,
-<code>1991</code>, <code>2000</code> and <code>2010</code>), and it
-includes dictionaries for the variables of both microdata (sample
-portion of the census) and for the variables available in census
-tract-level aggregate data.</p>
+Brazilian censuses since 1960 (<code>19960</code>, <code>1970</code>,
+<code>1980</code>, <code>1991</code>, <code>2000</code> and
+<code>2010</code>), and it includes dictionaries for the variables of
+both microdata (sample portion of the census) and for the variables
+available in census tract-level aggregate data.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Microdata variables</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">data_dictionary</span>(<span class="at">year =</span> <span class="dv">2010</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>                <span class="at">dataset =</span> <span class="st">&#39;microdata&#39;</span>)</span>
@@ -551,11 +551,11 @@ the edition of the census of interest and whether they want the
 households, or the <code>&#39;short&#39;</code> one that is used in the sample
 component of the cesus.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># short questionnaire</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">questionnaire</span>(<span class="at">year =</span> <span class="dv">2010</span>, </span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">questionnaire</span>(<span class="at">year =</span> <span class="dv">2022</span>, </span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>              <span class="at">type =</span> <span class="st">&#39;short&#39;</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co"># long questionnaire</span></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">questionnaire</span>(<span class="at">year =</span> <span class="dv">2010</span>, </span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">questionnaire</span>(<span class="at">year =</span> <span class="dv">2022</span>, </span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>              <span class="at">type =</span> <span class="st">&#39;long&#39;</span>)</span></code></pre></div>
 </div>
 <div id="interview-manual" class="section level1">
@@ -566,10 +566,10 @@ instructions for IBGE’s census takers (recenseadores) on how to collect
 the census data.</p>
 <p>Manuals for all censuses since 1970 are available.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># 2010</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">interview_manual</span>(<span class="at">year =</span> <span class="dv">2010</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">interview_manual</span>(<span class="at">year =</span> <span class="dv">2022</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># 1970</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">interview_manual</span>(<span class="at">year =</span> <span class="dv">1970</span>)</span></code></pre></div>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">interview_manual</span>(<span class="at">year =</span> <span class="dv">1960</span>)</span></code></pre></div>
 </div>
 
 
