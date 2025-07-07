@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
 #   add_labels,    # add labels to categorical variables
 #   as_data_frame, # return an Arrow DataSet or a data.frame
 #   showProgress,  # show download progress bar
-#   cache          # cache data for faster access later
+#   cache,         # cache data for faster access later
+#   verbose        # whether to print informative messages
 #   )
 
 ## ----warning=FALSE, message=FALSE---------------------------------------------
@@ -24,10 +25,12 @@ library(dplyr)
 library(ggplot2)
 
 ## ----warning = FALSE, message=FALSE-------------------------------------------
-pop <- read_population(year = 2010,
-                       columns = c('abbrev_state', 'V0606', 'V0010', 'V6400'),
-                       add_labels = 'pt',
-                       showProgress = FALSE)
+pop <- read_population(
+  year = 2010,
+  columns = c('abbrev_state', 'V0606', 'V0010', 'V6400'),
+  add_labels = 'pt',
+  showProgress = FALSE
+  )
 
 class(pop)
 
@@ -57,8 +60,10 @@ ggplot() +
   
 
 ## ----message=FALSE------------------------------------------------------------
-hs <- read_households(year = 2010, 
-                      showProgress = FALSE)
+hs <- read_households(
+  year = 2010, 
+  showProgress = FALSE
+  )
 
 
 ## ----warning = FALSE, message=FALSE-------------------------------------------
@@ -75,8 +80,11 @@ head(esg)
 ## ----warning = FALSE, message=FALSE-------------------------------------------
 library(geobr)
 
-muni_sf <- geobr::read_municipality(year = 2010,
-                                    showProgress = FALSE)
+muni_sf <- geobr::read_municipality(
+  year = 2010,
+  showProgress = FALSE
+  )
+
 head(muni_sf)
 
 ## ----warning = FALSE, message=FALSE-------------------------------------------
@@ -92,14 +100,18 @@ ggplot() +
 
 
 ## ----warning = FALSE, message=FALSE-------------------------------------------
-metro_muni <- geobr::read_metro_area(year = 2010, 
-                                     showProgress = FALSE) |> 
-              subset(name_metro == "RM São Paulo")
+metro_muni <- geobr::read_metro_area(
+  year = 2010, 
+  showProgress = FALSE) |>
+  subset(name_metro == "RM São Paulo")
+
 
 ## ----warning = FALSE, message=FALSE-------------------------------------------
-wt_areas <- geobr::read_weighting_area(code_weighting = "SP", 
-                                       showProgress = FALSE,
-                                       year = 2010)
+wt_areas <- geobr::read_weighting_area(
+  code_weighting = "SP", 
+  showProgress = FALSE,
+  year = 2010
+  )
 
 wt_areas <- subset(wt_areas, code_muni %in% metro_muni$code_muni)
 head(wt_areas)
@@ -126,19 +138,32 @@ ggplot() +
 
 
 ## ----warning=FALSE, eval=FALSE------------------------------------------------
-# censobr_cache(list_files = TRUE)
+# censobr::censobr_cache(
+#   list_files = TRUE,
+#   print_tree = TRUE
+#   )
 
 ## ----warning=FALSE, eval=FALSE------------------------------------------------
-# censobr_cache(delete_file = "2010_emigration")
+# censobr::censobr_cache(delete_file = "2010_emigration")
 # 
 
 ## ----warning=FALSE, eval=FALSE------------------------------------------------
-# censobr_cache(delete_file = "all")
+# censobr::censobr_cache(delete_file = "all")
 # 
 
-## ----eval=FALSE, warning=FALSE------------------------------------------------
-# tempf <- tempdir()
-# 
-# set_censobr_cache_dir(path = tempf)
-# 
+## ----eval=TRUE, warning=FALSE-------------------------------------------------
+tempf <- fs::path_temp(pattern = "my_temp_dir")
+
+censobr::set_censobr_cache_dir(path = tempf)
+
+
+## ----eval=TRUE, warning=FALSE, message=FALSE----------------------------------
+# download file to our new cache dir
+df_emi <- censobr::read_emigration(year = 2010)
+
+# check files in current cache dir
+censobr::censobr_cache(
+  list_files = TRUE, 
+  print_tree = TRUE
+  )
 

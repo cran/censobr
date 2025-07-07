@@ -30,7 +30,7 @@ head(rio) |>
 
 ## ----warning = FALSE, message=FALSE-------------------------------------------
 library(duckdb)
-library(dplyr)
+library(dbplyr)
 library(arrow)
 
 # Filter deaths of men in the state of Rio de Janeiro
@@ -53,7 +53,10 @@ con <- duckdb::dbConnect(duckdb::duckdb())
 duckdb::duckdb_register_arrow(con, 'mortality_2010_tbl', df)
 
 # Filter deaths of men in the state of Rio de Janeiro
-rio2 <- DBI::dbGetQuery(con, "SELECT * FROM 'mortality_2010_tbl' WHERE V0704 LIKE '%Masculino%' AND abbrev_state = 'RJ'")
+query <- glue::glue("SELECT * FROM 'mortality_2010_tbl' 
+         WHERE V0704 LIKE '%Masculino%' AND abbrev_state = 'RJ';")
+
+rio2 <- DBI::dbGetQuery(con, query)
 
 head(rio2)
 

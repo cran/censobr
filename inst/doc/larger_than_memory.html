@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2025-02-27" />
+<meta name="date" content="2025-07-06" />
 
 <title>Working with larger-than-memory data</title>
 
@@ -49,6 +49,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -338,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Working with larger-than-memory data</h1>
-<h4 class="date">2025-02-27</h4>
+<h4 class="date">2025-07-06</h4>
 
 
 
@@ -394,38 +395,20 @@ observations of the data.</p>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="fu">head</span>(rio) <span class="sc">|&gt;</span> </span>
 <span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;    code_muni code_state abbrev_state     name_state code_region name_region</span></span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;        &lt;int&gt;      &lt;int&gt;       &lt;char&gt;         &lt;char&gt;       &lt;int&gt;      &lt;char&gt;</span></span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; 1:   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; 2:   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; 3:   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; 4:   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; 5:   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; 6:   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt;    code_weighting  V0001  V0002         V0011   V0300    V0010  V1001  V1002</span></span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt;            &lt;char&gt; &lt;char&gt; &lt;char&gt;        &lt;char&gt;   &lt;num&gt;    &lt;num&gt; &lt;char&gt; &lt;char&gt;</span></span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; 1:  3300100003001     33  00100 3300100003001 1285657 13.51819      3     05</span></span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; 2:  3300100003001     33  00100 3300100003001 6084726 12.76395      3     05</span></span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; 3:  3300100003002     33  00100 3300100003002  898500 10.68108      3     05</span></span>
-<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; 4:  3300100003002     33  00100 3300100003002 2581116 11.61204      3     05</span></span>
-<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; 5:  3300100003002     33  00100 3300100003002 3768175 12.93833      3     05</span></span>
-<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; 6:  3300100003002     33  00100 3300100003002 4125020 10.66262      3     05</span></span>
-<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt;     V1003  V1004  V1006             V0703     V0704 V7051 V7052  M0703  M0704</span></span>
-<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="co">#&gt;    &lt;char&gt; &lt;char&gt; &lt;char&gt;            &lt;char&gt;    &lt;char&gt; &lt;num&gt; &lt;num&gt; &lt;char&gt; &lt;char&gt;</span></span>
-<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; 1:    013     00 Urbana     Março de 2010 Masculino    69    NA      2      2</span></span>
-<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="co">#&gt; 2:    013     00 Urbana Fevereiro de 2010 Masculino    84    NA      2      2</span></span>
-<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co">#&gt; 3:    013     00 Urbana     Abril de 2010 Masculino    38    NA      2      2</span></span>
-<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="co">#&gt; 4:    013     00 Urbana      Maio de 2010 Masculino    54    NA      2      2</span></span>
-<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; 5:    013     00  Rural    Agosto de 2009 Masculino    31    NA      2      2</span></span>
-<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="co">#&gt; 6:    013     00 Urbana  Setembro de 2009 Masculino    28    NA      2      2</span></span>
-<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt;     M7051  M7052                                 V1005</span></span>
-<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="co">#&gt;    &lt;char&gt; &lt;char&gt;                                &lt;char&gt;</span></span>
-<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co">#&gt; 1:      2      2                       Área urbanizada</span></span>
-<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="co">#&gt; 2:      2      2                   Área não urbanizada</span></span>
-<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; 3:      2      2                       Área urbanizada</span></span>
-<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt; 4:      2      2                       Área urbanizada</span></span>
-<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; 5:      2      2 Área rural exclusive aglomerado rural</span></span>
-<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; 6:      2      2                       Área urbanizada</span></span></code></pre></div>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 26</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;   code_muni code_state abbrev_state name_state     code_region name_region</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; *     &lt;int&gt;      &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;                &lt;int&gt; &lt;chr&gt;      </span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; 1   3300100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; 2   3300100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co">#&gt; 3   3300100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; 4   3300100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; 5   3300100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; 6   3300100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more variables: code_weighting &lt;chr&gt;, V0001 &lt;chr&gt;, V0002 &lt;chr&gt;,</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; #   V0011 &lt;chr&gt;, V0300 &lt;dbl&gt;, V0010 &lt;dbl&gt;, V1001 &lt;chr&gt;, V1002 &lt;chr&gt;,</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co">#&gt; #   V1003 &lt;chr&gt;, V1004 &lt;chr&gt;, V1006 &lt;chr&gt;, V0703 &lt;chr&gt;, V0704 &lt;chr&gt;,</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co">#&gt; #   V7051 &lt;dbl&gt;, V7052 &lt;dbl&gt;, M0703 &lt;chr&gt;, M0704 &lt;chr&gt;, M7051 &lt;chr&gt;,</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="co">#&gt; #   M7052 &lt;chr&gt;, V1005 &lt;chr&gt;</span></span></code></pre></div>
 </div>
 <div id="duckdb" class="section level2">
 <h2>2. <code>{duckdb}</code></h2>
@@ -433,15 +416,15 @@ observations of the data.</p>
 larger-than-memory data in R through database interface. There are
 different ways to use <code>{duckdb}</code>, but here cover three
 alternatives</p>
-<div id="combining-duckdb-dplyr" class="section level3">
-<h3>2.1 Combining <code>{duckdb}</code> &amp; <code>{dplyr}</code></h3>
+<div id="combining-duckdb-dbplyr" class="section level3">
+<h3>2.1 Combining <code>{duckdb}</code> &amp; <code>{dbplyr}</code></h3>
 <p>One easy option is to combine <code>{duckdb}</code> &amp;
-<code>{dplyr}</code>. Note here that first you need to convert the Arrow
-table into a DuckDB table with <code>arrow::to_duckdb()</code>. Also
-note that the you need to use a bit of <code>SQL</code> syntax inside
-the dplyr call. Using the same example as above:</p>
+<code>{dbplyr}</code>. Note here that first you need to convert the
+Arrow table into a DuckDB table with <code>arrow::to_duckdb()</code>.
+Also note that the you need to use a bit of <code>SQL</code> syntax
+inside the dplyr call. Using the same example as above:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(duckdb)</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(dbplyr)</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># Filter deaths of men in the state of Rio de Janeiro</span></span>
@@ -466,8 +449,8 @@ the dplyr call. Using the same example as above:</p>
 <span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt; #   V7051 &lt;dbl&gt;, V7052 &lt;dbl&gt;, M0703 &lt;chr&gt;, M0704 &lt;chr&gt;, M7051 &lt;chr&gt;,</span></span>
 <span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt; #   M7052 &lt;chr&gt;, V1005 &lt;chr&gt;</span></span></code></pre></div>
 </div>
-<div id="combining-duckdb-sql" class="section level3">
-<h3>2.2 Combining <code>{duckdb}</code> &amp; <code>SQL</code></h3>
+<div id="using-duckdb-with-sql" class="section level3">
+<h3>2.2 Using <code>{duckdb}</code> with <code>SQL</code></h3>
 <p>Another alternative is to combine <code>{duckdb}</code> with
 <code>{DBI}</code> using database interface and <code>SQL</code>
 syntax.</p>
@@ -481,37 +464,40 @@ syntax.</p>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>duckdb<span class="sc">::</span><span class="fu">duckdb_register_arrow</span>(con, <span class="st">&#39;mortality_2010_tbl&#39;</span>, df)</span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
 <span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co"># Filter deaths of men in the state of Rio de Janeiro</span></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>rio2 <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con, <span class="st">&quot;SELECT * FROM &#39;mortality_2010_tbl&#39; WHERE V0704 LIKE &#39;%Masculino%&#39; AND abbrev_state = &#39;RJ&#39;&quot;</span>)</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="fu">head</span>(rio2)</span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co">#&gt;   code_muni code_state abbrev_state     name_state code_region name_region</span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 1   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co">#&gt; 2   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt; 3   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; 4   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; 5   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; 6   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt;   code_weighting V0001 V0002         V0011   V0300    V0010 V1001 V1002 V1003</span></span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; 1  3300100003001    33 00100 3300100003001 1285657 13.51819     3    05   013</span></span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; 2  3300100003001    33 00100 3300100003001 6084726 12.76395     3    05   013</span></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt; 3  3300100003002    33 00100 3300100003002  898500 10.68108     3    05   013</span></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; 4  3300100003002    33 00100 3300100003002 2581116 11.61204     3    05   013</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; 5  3300100003002    33 00100 3300100003002 3768175 12.93833     3    05   013</span></span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; 6  3300100003002    33 00100 3300100003002 4125020 10.66262     3    05   013</span></span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt;   V1004  V1006             V0703     V0704 V7051 V7052 M0703 M0704 M7051 M7052</span></span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; 1    00 Urbana     Março de 2010 Masculino    69    NA     2     2     2     2</span></span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; 2    00 Urbana Fevereiro de 2010 Masculino    84    NA     2     2     2     2</span></span>
-<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt; 3    00 Urbana     Abril de 2010 Masculino    38    NA     2     2     2     2</span></span>
-<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; 4    00 Urbana      Maio de 2010 Masculino    54    NA     2     2     2     2</span></span>
-<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; 5    00  Rural    Agosto de 2009 Masculino    31    NA     2     2     2     2</span></span>
-<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; 6    00 Urbana  Setembro de 2009 Masculino    28    NA     2     2     2     2</span></span>
-<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt;                                   V1005</span></span>
-<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt; 1                       Área urbanizada</span></span>
-<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; 2                   Área não urbanizada</span></span>
-<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt; 3                       Área urbanizada</span></span>
-<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; 4                       Área urbanizada</span></span>
-<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; 5 Área rural exclusive aglomerado rural</span></span>
-<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; 6                       Área urbanizada</span></span></code></pre></div>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>query <span class="ot">&lt;-</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">&quot;SELECT * FROM &#39;mortality_2010_tbl&#39; </span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="st">         WHERE V0704 LIKE &#39;%Masculino%&#39; AND abbrev_state = &#39;RJ&#39;;&quot;</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>rio2 <span class="ot">&lt;-</span> DBI<span class="sc">::</span><span class="fu">dbGetQuery</span>(con, query)</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="fu">head</span>(rio2)</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co">#&gt;   code_muni code_state abbrev_state     name_state code_region name_region</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co">#&gt; 1   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co">#&gt; 2   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co">#&gt; 3   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="co">#&gt; 4   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co">#&gt; 5   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co">#&gt; 6   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co">#&gt;   code_weighting V0001 V0002         V0011   V0300    V0010 V1001 V1002 V1003</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co">#&gt; 1  3300100003001    33 00100 3300100003001 1285657 13.51819     3    05   013</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co">#&gt; 2  3300100003001    33 00100 3300100003001 6084726 12.76395     3    05   013</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co">#&gt; 3  3300100003002    33 00100 3300100003002  898500 10.68108     3    05   013</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a><span class="co">#&gt; 4  3300100003002    33 00100 3300100003002 2581116 11.61204     3    05   013</span></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co">#&gt; 5  3300100003002    33 00100 3300100003002 3768175 12.93833     3    05   013</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co">#&gt; 6  3300100003002    33 00100 3300100003002 4125020 10.66262     3    05   013</span></span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co">#&gt;   V1004  V1006             V0703     V0704 V7051 V7052 M0703 M0704 M7051 M7052</span></span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co">#&gt; 1    00 Urbana     Março de 2010 Masculino    69    NA     2     2     2     2</span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co">#&gt; 2    00 Urbana Fevereiro de 2010 Masculino    84    NA     2     2     2     2</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co">#&gt; 3    00 Urbana     Abril de 2010 Masculino    38    NA     2     2     2     2</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co">#&gt; 4    00 Urbana      Maio de 2010 Masculino    54    NA     2     2     2     2</span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co">#&gt; 5    00  Rural    Agosto de 2009 Masculino    31    NA     2     2     2     2</span></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a><span class="co">#&gt; 6    00 Urbana  Setembro de 2009 Masculino    28    NA     2     2     2     2</span></span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co">#&gt;                                   V1005</span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co">#&gt; 1                       Área urbanizada</span></span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; 2                   Área não urbanizada</span></span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt; 3                       Área urbanizada</span></span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt; 4                       Área urbanizada</span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; 5 Área rural exclusive aglomerado rural</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; 6                       Área urbanizada</span></span></code></pre></div>
 </div>
 </div>
 </div>

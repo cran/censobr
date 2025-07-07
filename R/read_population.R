@@ -10,6 +10,7 @@
 #' @template as_data_frame
 #' @template showProgress
 #' @template cache
+#' @template verbose
 #'
 #' @return An arrow `Dataset` or a `"data.frame"` object.
 #'
@@ -19,28 +20,32 @@
 #' @family Microdata
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' # return data as arrow Dataset
-#' df <- read_population(year = 2010,
-#'                       showProgress = FALSE)
+#' df <- read_population(
+#'   year = 2010,
+#'   showProgress = FALSE
+#'   )
 #'
-#'
-read_population <- function(year = 2010,
+read_population <- function(year,
                             columns = NULL,
                             add_labels = NULL,
                             as_data_frame = FALSE,
                             showProgress = TRUE,
-                            cache = TRUE){
+                            cache = TRUE,
+                            verbose = TRUE){
 
   ### check inputs
-  checkmate::assert_numeric(year)
+  checkmate::assert_numeric(year, any.missing = FALSE)
   checkmate::assert_vector(columns, null.ok = TRUE)
-  checkmate::assert_logical(as_data_frame)
+  checkmate::assert_logical(as_data_frame, null.ok = FALSE)
+  checkmate::assert_logical(verbose, null.ok = FALSE)
   # checkmate::assert_logical(merge_households)
   checkmate::assert_string(add_labels, pattern = 'pt', null.ok = TRUE)
 
   # data available for the years:
   years <- c(1960, 1970, 1980, 1991, 2000, 2010)
-  if (isFALSE(year %in% years)) { stop(paste0("Error: Data currently only available for the years ",
-                                             paste(years, collapse = " ")))}
+  if (isFALSE(year %in% years)) {
+    error_missing_years(years)
+    }
 
   ### Get url
   file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/",
@@ -51,7 +56,8 @@ read_population <- function(year = 2010,
   ### Download
   local_file <- download_file(file_url = file_url,
                               showProgress = showProgress,
-                              cache = cache)
+                              cache = cache,
+                              verbose = verbose)
 
   # check if download worked
   if(is.null(local_file)) { return(invisible(NULL)) }
@@ -59,14 +65,12 @@ read_population <- function(year = 2010,
   ### read data
   df <- arrow_open_dataset(local_file)
 
-  # ### merge household data
+  # # ### merge household data
   # if (isTRUE(merge_households)) {
-  #   message('Merging household data.')
-  #
   #   df <- merge_household_var(df,
   #                             year = year,
   #                             add_labels = add_labels,
-  #                             showProgress = showProgress)
+  #                             showProgress)
   # }
 
   ### Select
