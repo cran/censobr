@@ -77,7 +77,7 @@ how this dataset was processed on this link \url{https://github.com/antrologos/C
 }
 
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 # return data as arrow Dataset
 df <- read_population(
   year = 2010,
@@ -86,10 +86,10 @@ df <- read_population(
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other Microdata: 
-\code{\link{read_emigration}()},
-\code{\link{read_families}()},
-\code{\link{read_households}()},
-\code{\link{read_mortality}()}
+Other Microdata:
+\code{\link[=read_emigration]{read_emigration()}},
+\code{\link[=read_families]{read_families()}},
+\code{\link[=read_households]{read_households()}},
+\code{\link[=read_mortality]{read_mortality()}}
 }
 \concept{Microdata}

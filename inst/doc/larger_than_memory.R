@@ -8,56 +8,56 @@ knitr::opts_chunk$set(
 
 
 ## ----warning = FALSE, message=FALSE-------------------------------------------
-library(censobr)
-
-# read 2010 mortality data
-df <- censobr::read_mortality(
-  year = 2010,
-  add_labels = 'pt',
-  showProgress = FALSE
-  )
-
-## ----warning = FALSE, message=FALSE-------------------------------------------
-library(dplyr)
-
-# Filter deaths of men in the state of Rio de Janeiro
-rio <- df |>
-      filter(V0704 == 'Masculino' & abbrev_state == 'RJ')
-
-head(rio) |> 
-  collect()
-
+# library(censobr)
+# 
+# # read 2010 mortality data
+# df <- censobr::read_mortality(
+#   year = 2010,
+#   add_labels = 'pt',
+#   showProgress = FALSE
+#   )
 
 ## ----warning = FALSE, message=FALSE-------------------------------------------
-library(duckdb)
-library(dbplyr)
-library(arrow)
+# library(dplyr)
+# 
+# # Filter deaths of men in the state of Rio de Janeiro
+# rio <- df |>
+#       filter(V0704 == 'Masculino' & abbrev_state == 'RJ')
+# 
+# head(rio) |>
+#   collect()
+# 
 
-# Filter deaths of men in the state of Rio de Janeiro
-rio1 <- df |>
-        arrow::to_duckdb() |>
-        filter(sql("V0704 LIKE '%Masculino%' AND abbrev_state = 'RJ'"))
-
-head(rio1) |> 
-  collect()
-
+## ----warning = FALSE, message=FALSE-------------------------------------------
+# library(duckdb)
+# library(dbplyr)
+# library(arrow)
+# 
+# # Filter deaths of men in the state of Rio de Janeiro
+# rio1 <- df |>
+#         arrow::to_duckdb() |>
+#         filter(sql("V0704 LIKE '%Masculino%' AND abbrev_state = 'RJ'"))
+# 
+# head(rio1) |>
+#   collect()
+# 
 
 ## ----warning = FALSE----------------------------------------------------------
-library(duckdb)
-library(DBI)
-
-# create databse connection
-con <- duckdb::dbConnect(duckdb::duckdb())
-
-# register the data in the data base
-duckdb::duckdb_register_arrow(con, 'mortality_2010_tbl', df)
-
-# Filter deaths of men in the state of Rio de Janeiro
-query <- glue::glue("SELECT * FROM 'mortality_2010_tbl' 
-         WHERE V0704 LIKE '%Masculino%' AND abbrev_state = 'RJ';")
-
-rio2 <- DBI::dbGetQuery(con, query)
-
-head(rio2)
-
+# library(duckdb)
+# library(DBI)
+# 
+# # create databse connection
+# con <- duckdb::dbConnect(duckdb::duckdb())
+# 
+# # register the data in the data base
+# duckdb::duckdb_register_arrow(con, 'mortality_2010_tbl', df)
+# 
+# # Filter deaths of men in the state of Rio de Janeiro
+# query <- glue::glue("SELECT * FROM 'mortality_2010_tbl'
+#          WHERE V0704 LIKE '%Masculino%' AND abbrev_state = 'RJ';")
+# 
+# rio2 <- DBI::dbGetQuery(con, query)
+# 
+# head(rio2)
+# 
 

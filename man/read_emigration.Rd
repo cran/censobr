@@ -53,7 +53,7 @@ Download microdata of emigration records from Brazil's census. Data collected in
 the sample component of the questionnaire.
 }
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 # return data as arrow Dataset
 df <- read_emigration(
   year = 2010,
@@ -70,10 +70,10 @@ df <- read_emigration(
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other Microdata: 
-\code{\link{read_families}()},
-\code{\link{read_households}()},
-\code{\link{read_mortality}()},
-\code{\link{read_population}()}
+Other Microdata:
+\code{\link[=read_families]{read_families()}},
+\code{\link[=read_households]{read_households()}},
+\code{\link[=read_mortality]{read_mortality()}},
+\code{\link[=read_population]{read_population()}}
 }
 \concept{Microdata}

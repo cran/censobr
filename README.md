@@ -4,10 +4,12 @@
    status](https://www.r-pkg.org/badges/version/censobr)](https://CRAN.R-project.org/package=censobr)
 [![CRAN/METACRAN Total
    downloads](https://cranlogs.r-pkg.org/badges/grand-total/censobr?color=blue)](https://CRAN.R-project.org/package=censobr) [![Codecov test
-coverage](https://codecov.io/gh/ipeaGIT/censobr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipeaGIT/censobr?branch=main)
+coverage](https://codecov.io/gh/ipea/censobr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipea/censobr?branch=main)
 [![Lifecycle:
      maturing](https://img.shields.io/badge/lifecycle-maturing-yellow.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R-CMD-check](https://github.com/ipeaGIT/censobr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/ipeaGIT/censobr/actions?query=branch%3Amain)
+[![R-CMD-check](https://github.com/ipea/censobr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/ipea/censobr/actions?query=branch%3Amain)
+[![Paper](https://img.shields.io/badge/DOI-10.1590%2Fdados--2026--69--1--006-blue)](https://doi.org/10.1590/dados.2026.69.1.006)
+
 
 **{censobr}** is an R package to download data from Brazil's Population Census. It provides a very simple and efficient way to download and read the data sets and documentation of all the population censuses taken in and after 1960 in the country. The package is built on top of the [Arrow platform](https://arrow.apache.org/docs/r/), which allows users to work with larger-than-memory census data using [{dplyr} familiar functions](https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-data-with-dplyr).
 
@@ -20,7 +22,7 @@ install.packages("censobr")
 
 # or use the development version with latest features
 utils::remove.packages('censobr')
-remotes::install_github("ipeaGIT/censobr", ref="dev")
+remotes::install_github("ipea/censobr", ref="dev")
 library(censobr)
 ```
 
@@ -42,7 +44,7 @@ The package currently includes 6 main functions to download & read census data:
 8. `questionnaire()`
 9. `interview_manual()`
 
-Finally, the package includes three functions to help users manage the data chached locally.
+Finally, the package includes three functions to help users manage the data cached locally.
 
 10. `censobr_cache()` 
 11. `set_censobr_cache_dir()`
@@ -63,7 +65,7 @@ read_households(
   )
 ```
 
-***Note:*** all data sets in **{censobr}** are enriched with geography columns following the name standards of the [{geobr} package](https://github.com/ipeaGIT/geobr/) to help data manipulation and integration with spatial data from {geobr}. The added columns are: `c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)`.
+***Note:*** all data sets in **{censobr}** are enriched with geography columns following the name standards of the [{geobr} package](https://github.com/ipea/geobr/) to help data manipulation and integration with spatial data from {geobr}. The added columns are: `c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)`.
 
 ### Data cache
 
@@ -80,7 +82,7 @@ The first time the user runs a function, **{censobr}** will download the file an
 Microdata of Brazilian census are often be too big to load in users' RAM memory. To avoid this problem, **{censobr}** will by default return an [Arrow table](https://arrow.apache.org/docs/r/articles/arrow.html#tabular-data-in-arrow), which can be analyzed like a regular `data.frame` using the `dplyr` package without loading the full data to memory.
 
 
-More info in the package [vignette](https://ipeagit.github.io/censobr/).
+More info in the package [vignette](https://ipea.github.io/censobr/).
 
 
 ## Contributing to censobr
@@ -93,6 +95,8 @@ If you would like to contribute to **{censobr}**, you're welcome to open an issu
 As far as we know, **{censobr}** is the only R package that provides fast and convenient access to the complete data sets and documentation of Brazilian censuses. The [microdadosBrasil](https://github.com/lucasmation/microdadosBrasil) package used to provide access to microdata of several public data sets, but unfortunately, it has been discontinued.
 
 #### **Similar packages for other countries**
+
+- Bolivia: [censosbo](https://lab-tecnosocial.github.io/censosbo/)
 - Canada: [cancensus](https://mountainmath.github.io/cancensus/)
 - Chile: [censo2017](https://docs.ropensci.org/censo2017/)
 - US: [tidycensus](https://walker-data.com/tidycensus/)
@@ -103,20 +107,22 @@ As far as we know, **{censobr}** is the only R package that provides fast and co
 
 Original Census data is collected by the Brazilian Institute of Geography and Statistics (IBGE). The **{censobr}** package is developed by a team at the Institute for Applied Economic Research (Ipea), Brazil. If you want to cite this package, you can cite it as:
 
-- Pereira, Rafael H. M.; Barbosa, Rogério J. (2023) censobr: Download Data from Brazil's Population Census. R package version v0.4.0, <https://CRAN.R-project.org/package=censobr>. DOI: 10.32614/CRAN.package.censobr.
+- Pereira, R. H., & Barbosa, R. J. (2026). {censobr}: Fácil Acesso aos Dados dos Censos Demográficos Brasileiros. Dados, 69(1), e20240150. https://doi.org/10.1590/dados.2026.69.1.006
 
 
 ```
-bibentry(
-  bibtype  = "Manual",
-  title       = "censobr: Download Data from Brazil's Population Census",
-  author      = "Rafael H. M. Pereira [aut, cre] and Rogério J. Barbosa [aut]",
-  year        = 2023,
-  version     = "v0.2.0",
-  url         = "https://CRAN.R-project.org/package=censobr",
-  textVersion = "Pereira, R. H. M.; Barbosa, R. J. (2023) censobr: Download Data from Brazil's Population Census. R package version v0.2.0, <https://CRAN.R-project.org/package=censobr>."
-)
 
+@article{pereira2026censobr,
+  title={$\{$censobr$\}$: F{\'a}cil Acesso aos Dados dos Censos Demogr{\'a}ficos Brasileiros},
+  author={Pereira, Rafael HM and Barbosa, Rog{\'e}rio Jer{\^o}nimo},
+  journal={Dados},
+  volume={69},
+  number={1},
+  pages={e20240150},
+  year={2026},
+  url = "https://doi.org/10.1590/dados.2026.69.1.006",
+  publisher={SciELO Brasil}
+}
 ```
 
 

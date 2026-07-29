@@ -22,7 +22,7 @@ only needs to run this function once. This set directory is persistent across
 R sessions.
 }
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 
 # Set custom cache directory
 tempd <- tempdir()
@@ -33,8 +33,8 @@ set_censobr_cache_dir(path = NULL)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other Cache data: 
-\code{\link{censobr_cache}()},
-\code{\link{get_censobr_cache_dir}()}
+Other Cache data:
+\code{\link[=censobr_cache]{censobr_cache()}},
+\code{\link[=get_censobr_cache_dir]{get_censobr_cache_dir()}}
 }
 \concept{Cache data}

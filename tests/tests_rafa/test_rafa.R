@@ -402,12 +402,14 @@ urlchecker::url_update()
 Sys.setenv(NOT_CRAN = "true")
 testthat::test_local()
 
-── R CMD check results ───────────────────────────────────────────────── censobr 0.4.19999 ────
-Duration: 9m 3.4s
 
 # LOCAL
 Sys.setenv(NOT_CRAN = "true")
 devtools::check(pkg = ".",  cran = FALSE, env_vars = c(NOT_CRAN = "true"))
+
+# Run all diagnostics on the current package
+library(checktor)
+results <- checktor()
 
 # CRAN
 Sys.setenv(NOT_CRAN = "false")
