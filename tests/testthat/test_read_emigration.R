@@ -1,5 +1,3 @@
-context("read_emigration")
-
 # skip tests because they take too much time
 skip_if(Sys.getenv("TEST_ONE") != "")
 testthat::skip_on_cran()
@@ -77,17 +75,33 @@ test_that("emigration merge_households_vars", {
 test_that("read_emigration errors", {
 
   # Wrong date 4 digits
+  # only one year at a time: a vector used to fail with a cryptic
+  # "the condition has length > 1" from base R
+  testthat::expect_error( read_emigration(c(2000, 2010)), 'length 1' )
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( read_emigration(), 'declare' )
+  testthat::expect_error( read_emigration(year = NULL), 'declare' )
   testthat::expect_error(tester(year=999))
   testthat::expect_error(tester(year='999'))
-  testthat::expect_error(tester(columns = 'banana'))
+  testthat::expect_error( tester(columns = 'banana'), 'not found' )
   testthat::expect_error(tester(as_data_frame = 'banana'))
   testthat::expect_error(tester(showProgress = 'banana' ))
   testthat::expect_error(tester(cache = 'banana'))
   testthat::expect_error(tester(add_labels = 'banana'))
+  # 'ptbr' matches the old regex check but is not a valid option
+  testthat::expect_error(tester(add_labels = 'ptbr'))
   testthat::expect_error(tester(verbose='banana'))
 
   # missing labels
   testthat::expect_error(tester(year=2000, add_labels = 'pt'))
+
+  # columns only accepts character (a vector of column names) -- numeric
+  # indices are not supported, with or without merge_households
+  testthat::expect_error( tester(columns = c(1, 3)), 'character' )
+  testthat::expect_error(
+    tester(merge_households = TRUE, columns = 1L),
+    'character'
+    )
 
 })
 

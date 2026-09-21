@@ -35,38 +35,33 @@ read_households <- function(year,
                             verbose = TRUE){
 
   ### check inputs
-  checkmate::assert_numeric(year, any.missing = FALSE)
-  checkmate::assert_vector(columns, null.ok = TRUE)
+  if (missing(year) || is.null(year)) { error_year_not_declared() }
+  checkmate::assert_number(year)
+  checkmate::assert_character(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame)
   checkmate::assert_logical(verbose)
-  checkmate::assert_string(add_labels, pattern = 'pt', null.ok = TRUE)
+  checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
 
   # data available for the years:
-  years <- c(1960, 1970, 1980, 1991, 2000, 2010)
+  years <- censobr_years("households")
   if (isFALSE(year %in% years)) {
     error_missing_years(years)
     }
 
-  ### Get url
-  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/",
-                     censobr_env$data_release, "/", year, "_households_",
-                     censobr_env$data_release, ".parquet")
+  ### download and open
+  df <- open_censobr_data(dataset = 'households',
+                          year = year,
+                          showProgress = showProgress,
+                          cache = cache,
+                          verbose = verbose)
 
-
-  ### Download
-  local_file <- download_file(file_url = file_url,
-                              showProgress = showProgress,
-                              cache = cache,
-                              verbose = verbose)
-
-  # check if download worked
-  if(is.null(local_file)) { return(invisible(NULL)) }
-
-  ### read data
-  df <- arrow_open_dataset(local_file)
+  # NULL if the download failed or the cached file is corrupted
+  if (is.null(df)) { return(invisible(NULL)) }
 
   ### Select
   if (!is.null(columns)) { # columns <- c('V0002','V0011')
+    absent <- setdiff(columns, names(df))
+    if (length(absent) > 0) { error_columns_absent(absent) }
     df <- dplyr::select(df, dplyr::all_of(columns))
   }
 

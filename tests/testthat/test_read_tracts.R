@@ -1,5 +1,3 @@
-context("read_tracts")
-
 # skip tests because they take too much time
 skip_if(Sys.getenv("TEST_ONE") != "")
 testthat::skip_on_cran()
@@ -109,10 +107,22 @@ testthat::test_that("read_tracts 2000 datasets", {
 testthat::test_that("read_tracts", {
 
   # Wrong date 4 digits )
+  # only one year at a time: a vector used to fail with a cryptic
+  # "the condition has length > 1" from base R
+  testthat::expect_error( read_tracts(c(2000, 2010), 'Basico'), 'length 1' )
+  # year must be declared by the user, whether omitted or passed as NULL
+  # dataset must be declared, and the error must list the options for that year
+  testthat::expect_error( read_tracts(year = 2000), 'declare' )
+  testthat::expect_error( read_tracts(year = 2000), 'Instrucao' )
+  testthat::expect_error( read_tracts(year = 2010, dataset = NULL), 'declare' )
+  testthat::expect_error( read_tracts(), 'declare' )
+  testthat::expect_error( read_tracts(year = NULL), 'declare' )
   testthat::expect_error(tester(year=999, dataset='Basico'))
   testthat::expect_error(tester(year=999, dataset='Basico'))
   testthat::expect_error(tester(year=2010, dataset='banana'))
   testthat::expect_error(tester(year=2022, dataset='banana'))
+  # error for 2000 must list the 2000 data sets, not the 2010 ones
+  testthat::expect_error(tester(year=2000, dataset='banana'), 'Instrucao')
 
   testthat::expect_error(tester(cache='banana'))
   testthat::expect_error(tester(showProgress='banana'))

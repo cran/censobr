@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
 ## ----eval = FALSE-------------------------------------------------------------
 # # Microdata variables
 # data_dictionary(
-#   year = 2010,
+#   year = 2022,
 #   dataset = 'microdata'
 #   )
 # 

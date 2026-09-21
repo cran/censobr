@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2026-07-28" />
+<meta name="date" content="2026-09-18" />
 
 <title>Census documentation</title>
 
@@ -339,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Census documentation</h1>
-<h4 class="date">2026-07-28</h4>
+<h4 class="date">2026-09-18</h4>
 
 
 
@@ -406,9 +406,6 @@ Data dictionary (codebook)
 Microdata
 </td>
 <td>
-<i>X</i>
-</td>
-<td>
 X
 </td>
 <td>
@@ -424,7 +421,10 @@ X
 X
 </td>
 <td>
-<i>soon</i>
+X
+</td>
+<td>
+X
 </td>
 </tr>
 <tr>
@@ -434,10 +434,10 @@ Census tract aggregates
 <td>
 </td>
 <td>
+X
 </td>
 <td>
-</td>
-<td>
+X
 </td>
 <td>
 X
@@ -446,7 +446,10 @@ X
 X
 </td>
 <td>
-<i>X</i>
+X
+</td>
+<td>
+X
 </td>
 </tr>
 <tr>
@@ -526,15 +529,17 @@ it super quick and convenient.</p>
 <h1>Data Dictionary</h1>
 <p>The <code>data_dictionary()</code> indicate the definition of each
 variable, and the meaning of their categories in the case of categorical
-variables. The function currently covers the data dictionaries for all
-Brazilian censuses since 1960 (<code>19960</code>, <code>1970</code>,
-<code>1980</code>, <code>1991</code>, <code>2000</code> and
-<code>2010</code>), and it includes dictionaries for the variables of
-both microdata (sample portion of the census) and for the variables
-available in census tract-level aggregate data.</p>
+variables. The function covers two types of dictionary, passed in the
+<code>dataset</code> argument: <code>&quot;microdata&quot;</code>, which describes
+the variables of the microdata (sample portion of the census) and is
+available for every Brazilian census since 1960 (<code>1960</code>,
+<code>1970</code>, <code>1980</code>, <code>1991</code>,
+<code>2000</code>, <code>2010</code> and <code>2022</code>), and
+<code>&quot;tracts&quot;</code>, which describes the variables of the census
+tract-level aggregate data and is available since 1970.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Microdata variables</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">data_dictionary</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2010</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2022</span>,</span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="at">dataset =</span> <span class="st">&#39;microdata&#39;</span></span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  )</span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>

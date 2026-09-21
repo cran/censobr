@@ -1,5 +1,3 @@
-context("read_households")
-
 # skip tests because they take too much time
 skip_if(Sys.getenv("TEST_ONE") != "")
 testthat::skip_on_cran()
@@ -79,6 +77,42 @@ test_that("read_households reading", {
   test5 <- test5 |> dplyr::filter(abbrev_state == 'CE') |> as.data.frame()
   testthat::expect_true(paste('\u00c1rea urbanizada de vila ou cidade') %in% test5$V1005)
 
+  # 1960 labels: codes are stored as integers in this release, and the
+  # labelled query must stay lazy
+  testthat::expect_warning(
+    test1960 <- tester(year = 1960, add_labels = 'pt',
+                       columns = c('code_region', 'V102', 'V105')),
+    'two different releases'
+    )
+  testthat::expect_s3_class(test1960, 'arrow_dplyr_query')
+  test1960 <- test1960 |> dplyr::distinct(V102, V105) |> dplyr::collect()
+  testthat::expect_true('R\u00fastico' %in% test1960$V102)
+  testthat::expect_true('Rede geral com canaliza\u00e7\u00e3o interna' %in% test1960$V105)
+
+  # 1970 labels
+  test1970 <- tester(year = 1970, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V009', 'V019')) |>
+    dplyr::distinct(V009, V019) |>
+    dplyr::collect()
+  testthat::expect_true('Pr\u00f3prio j\u00e1 pago' %in% test1970$V009)
+  testthat::expect_true('N\u00e3o tem' %in% test1970$V019)
+
+  # 1980 labels: codes are strings
+  test1980 <- tester(year = 1980, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V203', 'V220')) |>
+    dplyr::distinct(V203, V220) |>
+    dplyr::collect()
+  testthat::expect_true('Alvenaria' %in% test1980$V203)
+  testthat::expect_true('Preto e branco' %in% test1980$V220)
+
+  # 1991 labels: codes are strings without leading zeros
+  test1991 <- tester(year = 1991, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V0206', 'V2013')) |>
+    dplyr::distinct(V0206, V2013) |>
+    dplyr::collect()
+  testthat::expect_true('Vala negra' %in% test1991$V0206)
+  testthat::expect_true('Mais de 20 a 30 salários mínimos' %in% test1991$V2013)
+
   # no message
   testthat::expect_no_message(tester(verbose = FALSE))
 
@@ -119,8 +153,10 @@ test_that("read_households totals", {
 
   # 1970
   dfh <- tester(year = 1970)
+  # since the v0.7.0 data release weight_household is stored as an integer,
+  # which moves this total down from the 17682112 of earlier releases
   total_1970_p <- dplyr::summarise(dfh, total = sum(weight_household, na.rm=T)) |> dplyr::collect()
-  expect_equal(total_1970_p$total, 17682112)
+  expect_equal(total_1970_p$total, 17643387)
 
 })
 
@@ -131,13 +167,24 @@ test_that("read_households totals", {
 test_that("read_households errors", {
 
   # Wrong date 4 digits
+  # only one year at a time: a vector used to fail with a cryptic
+  # "the condition has length > 1" from base R
+  testthat::expect_error( read_households(c(2000, 2010)), 'length 1' )
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( read_households(), 'declare' )
+  testthat::expect_error( read_households(year = NULL), 'declare' )
   testthat::expect_error(tester(year=999))
   testthat::expect_error(tester(year='999'))
-  testthat::expect_error(tester(columns = 'banana'))
+  testthat::expect_error( tester(columns = 'banana'), 'not found' )
+  # columns only accepts character (a vector of column names) -- numeric
+  # indices are not supported
+  testthat::expect_error( tester(columns = c(1, 3)), 'character' )
   testthat::expect_error(tester(as_data_frame = 'banana'))
   testthat::expect_error(tester(showProgress = 'banana' ))
   testthat::expect_error(tester(cache = 'banana'))
   testthat::expect_error(tester(add_labels = 'banana'))
+  # 'ptbr' matches the old regex check but is not a valid option
+  testthat::expect_error(tester(add_labels = 'ptbr'))
   testthat::expect_error(tester(verbose='banana'))
 
   # missing labels

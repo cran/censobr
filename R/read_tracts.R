@@ -59,8 +59,8 @@ read_tracts <- function(year,
                         verbose = TRUE){
 
   ### check inputs
-  checkmate::assert_numeric(year, any.missing = FALSE)
-  checkmate::assert_string(dataset, null.ok = FALSE)
+  if (missing(year) || is.null(year)) { error_year_not_declared() }
+  checkmate::assert_number(year)
   checkmate::assert_logical(as_data_frame)
   checkmate::assert_logical(showProgress)
   checkmate::assert_logical(cache)
@@ -68,7 +68,7 @@ read_tracts <- function(year,
 
 
   # data available for the years:
-  years <- c(2000, 2010, 2022)
+  years <- censobr_years("tracts")
   if (isFALSE(year %in% years)) {
     error_missing_years(years)
   }
@@ -85,11 +85,20 @@ read_tracts <- function(year,
                       "Indigenas", "Quilombolas", "Entorno", "Obitos",
                       "Preliminares")
 
+  # data sets available for the requested year
+  data_sets_year <- switch(as.character(year),
+                           '2000' = data_sets_2000,
+                           '2010' = data_sets_2010,
+                           '2022' = data_sets_2022)
+
+  if (missing(dataset) || is.null(dataset)) { error_arg_not_declared('dataset', data_sets_year) }
+  checkmate::assert_string(dataset, null.ok = FALSE)
+
   # check requested data set
   dataset <- tolower(dataset)
 
   if (year==2000 & isFALSE(dataset %in% tolower(data_sets_2000))) {
-    error_missing_datasets(data_sets_2010)
+    error_missing_datasets(data_sets_2000)
   }
 
   if (year==2010 & isFALSE(dataset %in% tolower(data_sets_2010))) {
@@ -117,6 +126,9 @@ read_tracts <- function(year,
 
   ### read data
   df <- arrow_open_dataset(local_file)
+
+  # the cached file may be corrupted; arrow_open_dataset() returns NULL
+  if (is.null(df)) { return(invisible(NULL)) }
 
   # ### Select
   # if (!is.null(columns)) { # columns <- c('V0002','V0011')

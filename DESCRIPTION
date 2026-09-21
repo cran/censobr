@@ -1,7 +1,7 @@
 Type: Package
 Package: censobr
 Title: Download Data from Brazil's Population Census
-Version: 0.6.0
+Version: 1.0.0
 Authors@R: 
     c(person(given="Rafael H. M.", family="Pereira", 
              email="rafa.pereira.br@gmail.com", 
@@ -11,11 +11,17 @@ Authors@R:
              email="antrologos@gmail.com", 
              role=c("aut"), 
              comment = c(ORCID = "0000-0002-6796-4547")),
+      person(given="Pedro Herculano", family="Souza", 
+             email="pedro.souza@ipea.gov.br", 
+             role=c("ctb")),
       person(given="Diego Rabatone", family="Oliveira", 
              email="diraol@diraol.eng.br", 
              role=c("ctb")),
       person(given="Neal", family="Richardson", 
              email="neal.p.richardson@gmail.com", 
+             role=c("ctb")),
+      person(given="Haydee", family="Svab", 
+             email="haydee.svab@gmail.com", 
              role=c("ctb")),
       person(given = "Ipea - Institute for Applied Economic Research",
              role = c("cph", "fnd")))
@@ -30,22 +36,25 @@ License: MIT + file LICENSE
 URL: https://github.com/ipea/censobr, https://ipea.github.io/censobr/
 BugReports: https://github.com/ipea/censobr/issues
 Depends: R (>= 4.1.0)
-Imports: arrow (>= 15.0.1), checkmate, cli, curl (>= 5.0.0), dplyr,
-        duckdb, fs, glue, rlang, tools
-Suggests: covr, DBI, dbplyr, geobr, ggplot2 (>= 3.3.1), rmarkdown,
-        kableExtra, knitr, scales, testthat
+Imports: arrow (>= 15.0.1), checkmate, cli, dplyr, duckdb, fs, glue,
+        httr2 (>= 1.0.0), rlang, tools
+Suggests: covr, DBI, dbplyr, geobr (>= 2.0.1), ggplot2 (>= 3.3.1),
+        rmarkdown, kableExtra, knitr, scales, testthat, withr
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 8.0.0
+Config/roxygen2/version: 8.1.0
+Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2026-07-29 02:41:20 UTC; rafap
+Packaged: 2026-09-19 00:47:58 UTC; rafap
 Author: Rafael H. M. Pereira [aut, cre] (ORCID:
     <https://orcid.org/0000-0003-2125-7465>),
   Rogério J. Barbosa [aut] (ORCID:
     <https://orcid.org/0000-0002-6796-4547>),
+  Pedro Herculano Souza [ctb],
   Diego Rabatone Oliveira [ctb],
   Neal Richardson [ctb],
+  Haydee Svab [ctb],
   Ipea - Institute for Applied Economic Research [cph, fnd]
 Maintainer: Rafael H. M. Pereira <rafa.pereira.br@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-07-29 06:40:02 UTC
+Date/Publication: 2026-09-21 10:00:34 UTC

@@ -41,48 +41,51 @@ read_mortality <- function(year,
                            verbose = TRUE){
 
   ### check inputs
-  checkmate::assert_numeric(year, any.missing = FALSE)
-  checkmate::assert_vector(columns, null.ok = TRUE)
+  if (missing(year) || is.null(year)) { error_year_not_declared() }
+  checkmate::assert_number(year)
+  checkmate::assert_character(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame)
   checkmate::assert_logical(verbose)
   checkmate::assert_logical(merge_households)
-  checkmate::assert_string(add_labels, pattern = 'pt', null.ok = TRUE)
+  checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
 
   # available for the years:
-  years <- c(2010)
+  years <- censobr_years("mortality")
   if (isFALSE(year %in% years)) {
     error_missing_years(years)
     }
 
-  ### Get url
-  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/",
-                     censobr_env$data_release, "/", year, "_mortality_",
-                     censobr_env$data_release, ".parquet")
+  ### download and open
+  df <- open_censobr_data(dataset = 'mortality',
+                          year = year,
+                          showProgress = showProgress,
+                          cache = cache,
+                          verbose = verbose)
 
-
-  ### Download
-  local_file <- download_file(file_url = file_url,
-                              showProgress = showProgress,
-                              cache = cache,
-                              verbose = verbose)
-
-  # check if download worked
-  if(is.null(local_file)) { return(invisible(NULL)) }
-
-  ### read data
-  df <- arrow_open_dataset(local_file)
+  # NULL if the download failed or the cached file is corrupted
+  if (is.null(df)) { return(invisible(NULL)) }
 
   ### merge household data
   if (isTRUE(merge_households)) {
     df <- merge_household_var(df,
                               year = year,
+                              columns = columns,
                               add_labels = add_labels,
                               showProgress = showProgress,
+                              cache = cache,
                               verbose = verbose)
+    # merge_household_var() returns a lazy Dataset; read_mortality() has
+    # always returned an in-memory Table for this path, so compute() it back
+    if (!is.null(df)) { df <- dplyr::compute(df) }
     }
+
+  # merge_household_var() returns NULL if the household data could not be downloaded
+  if (isTRUE(merge_households) && is.null(df)) { return(invisible(NULL)) }
 
   ### Select
   if (!is.null(columns)) { # columns <- c('V0002','V0011')
+    absent <- setdiff(columns, names(df))
+    if (length(absent) > 0) { error_columns_absent(absent) }
     df <- dplyr::select(df, dplyr::all_of(columns))
   }
 

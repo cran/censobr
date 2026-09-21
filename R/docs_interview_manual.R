@@ -9,7 +9,9 @@
 #' @template cache
 #' @template verbose
 #'
-#' @return Opens a `.pdf` file on the browser
+#' @return Returns the path to the downloaded file. When `verbose = TRUE` and the
+#'         session is interactive, the file is also opened and the path is
+#'         returned invisibly.
 #' @export
 #' @family Census documentation
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
@@ -19,18 +21,19 @@
 #'   showProgress = FALSE
 #'   )
 #'
-interview_manual <- function(year = NULL,
+interview_manual <- function(year,
                              showProgress = TRUE,
                              cache = TRUE,
                              verbose = TRUE){
   # year = 2000
 
   ### check inputs
-  checkmate::assert_numeric(year)
+  if (missing(year) || is.null(year)) { error_year_not_declared() }
+  checkmate::assert_number(year)
   checkmate::assert_logical(verbose)
 
   # data available for the years:
-  years <- c(1960, 1970, 1980, 1991, 2000, 2010, 2022)
+  years <- censobr_years("interview_manual")
   if (isFALSE(year %in% years)) {
     years_available <- paste(years, collapse = " ")
     cli::cli_abort(
@@ -52,6 +55,12 @@ interview_manual <- function(year = NULL,
   # check if download worked
   if(is.null(local_file)) { return(NULL) }
 
-  # open data dic on browser
-  utils::browseURL(url = local_file)
+  # open the file only when the user asked for messages and the session is
+  # interactive. Otherwise simply hand back the path to the downloaded file.
+  if (isTRUE(verbose) && interactive()) {
+    utils::browseURL(url = local_file)
+    return(invisible(local_file))
+  }
+
+  return(local_file)
 }
